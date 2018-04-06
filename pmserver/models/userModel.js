@@ -16,8 +16,6 @@ userSchema = new Schema(
     password: {
       type: String,
       required: [true, 'Password is required'],
-      maxlength: 50,
-      minlength: [8, 'Password should be longer than 8 characters'],
     },
   }
 );
