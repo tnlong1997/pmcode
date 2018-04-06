@@ -1,4 +1,4 @@
-var User = require('../models/user');
+var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
 
 // Display all user
@@ -13,8 +13,9 @@ exports.user_list = function(req, res, next) {
         success: true,
         code: 200,
         data: user_list,
-      })
+      });
     });
+
 }
 
 exports.user_sign_up = function(req, res, next) {
@@ -26,7 +27,9 @@ exports.user_sign_up = function(req, res, next) {
     }
   );
 
+  // Check if user username and password is valid
   newUser.validate(function(err) {
+
     if (err) {
       res.send({
         success: false,
@@ -35,6 +38,8 @@ exports.user_sign_up = function(req, res, next) {
       });
       return false;
     } else {
+
+      // Save User to database
       newUser.save(function(err) {
         if (err) {
           res.send({
@@ -50,6 +55,8 @@ exports.user_sign_up = function(req, res, next) {
           user_id: newUser._id,
         });
       });
+
     }
+
   });
 }
