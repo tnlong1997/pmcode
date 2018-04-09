@@ -40,7 +40,7 @@ exports.user_sign_up = function(req, res, next) {
     } else {
 
       // Save User to database
-      newUser.save(function(err) {
+      newUser.save(function(err, user) {
         if (err) {
           res.send({
             success: false,
@@ -49,6 +49,7 @@ exports.user_sign_up = function(req, res, next) {
           });
           return next(err);
         }
+        req.session.user_id = newUser._id;
         res.send({
           success: true,
           code: 200,
