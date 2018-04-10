@@ -5,8 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
 
 
 var index = require('./routes/index');
@@ -23,15 +21,6 @@ mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-app.use(session({
-	secret: 'primor',
-	resave: true,
-	saveUninitialized: false,
-  	store: new MongoStore({
-  		mongooseConnection: db
-  	})
-}))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,7 +55,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;

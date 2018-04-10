@@ -49,7 +49,6 @@ exports.user_sign_up = function(req, res, next) {
           });
           return next(err);
         }
-        req.session.user_id = newUser._id;
         res.send({
           success: true,
           code: 200,

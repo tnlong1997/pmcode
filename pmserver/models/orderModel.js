@@ -8,8 +8,8 @@ var orderSchema = new mongoose.Schema({
 	},
 	buyer: {
 		type: mongoose.Schema.Types.ObjectId, 
-		ref: 'User',
-		required: true
+		ref: 'User'
+		//required: true
 	},
 	traveler: {
 		type: mongoose.Schema.Types.ObjectId, 
