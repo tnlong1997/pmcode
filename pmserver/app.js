@@ -14,8 +14,8 @@ var orders = require('./routes/orders')
 var app = express();
 
 //Set up mongoose connection
-// databaseUrl = 'mongodb://tnlong1997:bdragon7125..@ds041404.mlab.com:41404/primor';
-databaseUrl = 'mongodb://localhost:27017';
+databaseUrl = 'mongodb://tnlong1997:bdragon7125..@ds041404.mlab.com:41404/primor';
+// databaseUrl = 'mongodb://localhost:27017';
 var mongoDB = databaseUrl;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
