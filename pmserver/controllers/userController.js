@@ -1,5 +1,7 @@
 var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
+var secret = require('../config/secret');
+var jwt = require('jsonwebtoken');
 
 // Display all user
 exports.user_list = function(req, res, next) {
