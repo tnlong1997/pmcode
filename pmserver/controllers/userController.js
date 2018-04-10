@@ -82,7 +82,7 @@ exports.user_log_in = function(req, res, next) {
     })
   }
 
-  User.findOne({username: req.body.email})
+  User.findOne({email: req.body.email})
     .exec(function(err, user) {
       if (err) {
         return res.send({
@@ -103,7 +103,7 @@ exports.user_log_in = function(req, res, next) {
       user.comparePassword(req.body.password, function(err, isMatch) {
         if (isMatch && !err) {
           // Create token if the password matched and no error was thrown
-          var token = jwt.sign({username: user.email, _id: user._id}, secret, {
+          var token = jwt.sign({email: user.email, _id: user._id}, secret, {
             expiresIn: 1000000000000000 // in seconds
           });
           res.json({
