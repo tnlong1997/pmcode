@@ -7,6 +7,7 @@ var tokenAuthentication = require('../middlewares/tokenAuthentication');
 router.use(tokenAuthentication);
 
 router.get('/', function(req, res, next) {
+  // For testing
   return res.send('Protected primor routes');
 });
 
