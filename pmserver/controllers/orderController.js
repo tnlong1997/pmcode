@@ -4,8 +4,9 @@ var Item = require('../models/itemModel');
 exports.order_list = function(req, res, next){
 	Order.find().exec(function(err, orders){
 		if(err){
-			res.send({
+			return res.send({
 				success : false,
+				code : 400,
 				status : err
 
 			});
@@ -14,11 +15,13 @@ exports.order_list = function(req, res, next){
 		if(orders.length == 0){
 			res.send({
 				success: true,
+				code: 200,
 				status: "no order in database"
 			});
 		}else{
 			res.send({
 				success : true,
+				code : 200,
 				status : "received order list",
 				orders : orders
 			});
@@ -42,8 +45,9 @@ exports.create_order = function(req, res, next){
 
 		new_item.save(function(error, item){
 			if(error){ 										//this error contains duplicated key.
-				res.send({
+				return res.send({
 					success : false,
+					code : 400,
 					status : err
 				});
 			}
@@ -59,13 +63,15 @@ exports.create_order = function(req, res, next){
 
 		new_order.save(function(order_error, order){
 			if(order_error){						
-				res.send({
+				return res.send({
 					success : false,
+					code : 400,
 					status : order_error
 				});
 			}else{
-				res.send({
+				return res.send({
 					success : true,
+					code : 200,
 					status: "order and item created",
 					order_id : new_order._id,
 					item_id : new_item._id
@@ -78,8 +84,9 @@ exports.create_order = function(req, res, next){
 		// var err = new Error("All fields required");
 		// err.status = 400;
 		// return next(err);
-		res.send({
+		rturn res.send({
 			success : false,
+			code : 400,
 			status: "all fields required"
 		});
 	}
