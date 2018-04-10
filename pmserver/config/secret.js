@@ -1,1 +1,1 @@
-module.exports = 'super.super.secret.shhh';
+module.exports = 'primor.super.super.secret';
