@@ -6,11 +6,22 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+
 var index = require('./routes/index');
 var users = require('./routes/users');
+var orders = require('./routes/orders')
 var protect = require('./routes/protect');
 
 var app = express();
+
+//Set up mongoose connection
+databaseUrl = 'mongodb://tnlong1997:bdragon7125..@ds041404.mlab.com:41404/primor';
+// databaseUrl = 'mongodb://localhost:27017';
+var mongoDB = databaseUrl;
+mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/orders', orders);
 app.use('/protect', protect);
 
 // catch 404 and forward to error handler
@@ -45,13 +57,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-//Set up mongoose connection
-databaseUrl = 'mongodb://tnlong1997:bdragon7125..@ds041404.mlab.com:41404/primor';
-var mongoDB = databaseUrl;
-mongoose.connect(mongoDB);
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 module.exports = app;
