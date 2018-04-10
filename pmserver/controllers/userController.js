@@ -40,7 +40,7 @@ exports.user_sign_up = function(req, res, next) {
     } else {
 
       // Save User to database
-      newUser.save(function(err, user) {
+      newUser.save(function(err) {
         if (err) {
           res.send({
             success: false,
