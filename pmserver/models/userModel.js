@@ -20,6 +20,15 @@ userSchema = new Schema(
   }
 );
 
+userSchema.methods.comparePassword = function(inputPassword, callback) {
+  bcrypt.compare(inputPassword, this.password, function(err, isMatch) {
+    if (err) {
+      return callback(err)
+    }
+    callback(null, isMatch);
+  });
+}
+
 userSchema.plugin(uniqueValidator);
 
 //Export model
