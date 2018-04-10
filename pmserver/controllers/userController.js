@@ -1,5 +1,7 @@
 var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
+var secret = require('../config/secret');
+var jwt = require('jsonwebtoken');
 
 // Display all user
 exports.user_list = function(req, res, next) {
@@ -59,4 +61,62 @@ exports.user_sign_up = function(req, res, next) {
     }
 
   });
+}
+
+// User login
+exports.user_log_in = function(req, res, next) {
+
+  if (!req.body.email) {
+    return res.send({
+      success: false,
+      code: 400,
+      err: "No email in input"
+    });
+  }
+
+  if (!req.body.password) {
+    return res.send({
+      success: false,
+      code: 400,
+      err: "No password in input"
+    })
+  }
+
+  User.findOne({email: req.body.email})
+    .exec(function(err, user) {
+      if (err) {
+        return res.send({
+          success: false,
+          code: 400,
+          err: err
+        });
+      }
+
+      if (!user) {
+        return res.send({
+          success: false,
+          code: 400,
+          err: "Authenticate failed. User not found"
+        });
+      }
+
+      user.comparePassword(req.body.password, function(err, isMatch) {
+        if (isMatch && !err) {
+          // Create token if the password matched and no error was thrown
+          var token = jwt.sign({email: user.email, _id: user._id}, secret, {
+            expiresIn: 1000000000000000 // in seconds
+          });
+          res.json({
+            success: true,
+            code: 200,
+            token: token,
+          });
+        } else {
+          res.send({
+            success: false,
+            message: 'Authentication failed. Passwords did not match.'
+          });
+        }
+      })
+    });
 }

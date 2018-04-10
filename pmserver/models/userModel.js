@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
+var bcrypt = require('bcrypt-nodejs');
 
 var Schema = mongoose.Schema;
 
@@ -19,6 +20,15 @@ userSchema = new Schema(
     },
   }
 );
+
+userSchema.methods.comparePassword = function(inputPassword, callback) {
+  bcrypt.compare(inputPassword, this.password, function(err, isMatch) {
+    if (err) {
+      return callback(err)
+    }
+    callback(null, isMatch);
+  });
+}
 
 userSchema.plugin(uniqueValidator);
 
