@@ -14,7 +14,7 @@ var itemSchema = new mongoose.Schema({
 	buyer: {
 		type: mongoose.Schema.Types.ObjectId, 
 		ref: 'User'
-		//required: true
+		//required: true //comment out before the use of jwt
 	},
 	item_price: {
 		type: Number,

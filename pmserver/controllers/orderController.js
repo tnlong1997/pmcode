@@ -4,16 +4,22 @@ var Item = require('../models/itemModel');
 exports.order_list = function(req, res, next){
 	Order.find().exec(function(err, orders){
 		if(err){
-			return next(err);
+			res.send({
+				success : false,
+				status : err
+
+			});
 		}
 
 		if(orders.length == 0){
 			res.send({
+				success: true,
 				status: "no order in database"
 			});
 		}else{
 			res.send({
-				status : "success",
+				success : true,
+				status : "received order list",
 				orders : orders
 			});
 		}
@@ -35,25 +41,32 @@ exports.create_order = function(req, res, next){
 		});
 
 		new_item.save(function(error, item){
-			if(error){ //this error contains duplicated key.
-				return next(error);
+			if(error){ 										//this error contains duplicated key.
+				res.send({
+					success : false,
+					status : err
+				});
 			}
 		});
-
+														
 		var new_order = new Order({
 			order_name : req.body.order_name,
 			item : new_item._id,
 			traveler_fee : req.body.traveler_fee,
-			total_fee : 0,
+			total_fee : 0,									//total fee will be calculated later
 			created_date_time : Date.now()
 		});
 
 		new_order.save(function(order_error, order){
-			if(order_error){
-				return next(order_error);
+			if(order_error){						
+				res.send({
+					success : false,
+					status : order_error
+				});
 			}else{
 				res.send({
-					status: "success",
+					success : true,
+					status: "order and item created",
 					order_id : new_order._id,
 					item_id : new_item._id
 				});
@@ -66,6 +79,7 @@ exports.create_order = function(req, res, next){
 		// err.status = 400;
 		// return next(err);
 		res.send({
+			success : false,
 			status: "all fields required"
 		});
 	}
