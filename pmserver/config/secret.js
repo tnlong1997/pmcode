@@ -1,3 +1,1 @@
-module.exports = function() {
-  return 'super.super.secret.shhh';
-}
+module.exports = 'super.super.secret.shhh',
