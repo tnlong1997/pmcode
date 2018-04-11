@@ -84,7 +84,7 @@ exports.create_order = function(req, res, next){
 		// var err = new Error("All fields required");
 		// err.status = 400;
 		// return next(err);
-		rturn res.send({
+		return res.send({
 			success : false,
 			code : 400,
 			status: "all fields required"
