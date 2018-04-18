@@ -7,18 +7,18 @@ var jwt = require('jsonwebtoken');
 exports.user_list = function(req, res, next) {
 
 	User.find()
-	.exec(function(err, user_list) {
-		if (err) {
-			return next(err);
-		}
-		res.send({
-			success: true,
-			code: 200,
-			data: user_list,
+		.exec(function(err, user_list) {
+			if (err) {
+				return next(err);
+			}
+			res.send({
+				success: true,
+				code: 200,
+				data: user_list,
+			});
 		});
-	});
 
-}
+};
 
 exports.user_sign_up = function(req, res, next) {
 
@@ -61,10 +61,10 @@ exports.user_sign_up = function(req, res, next) {
 		}
 
 	});
-}
+};
 
 // User login
-exports.user_log_in = function(req, res, next) {
+exports.user_log_in = function(req, res) {
 
 	if (!req.body.email) {
 		return res.send({
@@ -79,44 +79,44 @@ exports.user_log_in = function(req, res, next) {
 			success: false,
 			code: 400,
 			err: "No password in input"
-		})
+		});
 	}
 
 	User.findOne({email: req.body.email})
-	.exec(function(err, user) {
-		if (err) {
-			return res.send({
-				success: false,
-				code: 400,
-				err: err
-			});
-		}
-
-		if (!user) {
-			return res.send({
-				success: false,
-				code: 400,
-				err: "Authenticate failed. User not found"
-			});
-		}
-
-		user.comparePassword(req.body.password, function(err, isMatch) {
-			if (isMatch && !err) {
-				// Create token if the password matched and no error was thrown
-				var token = jwt.sign({email: user.email, _id: user._id}, secret, {
-					expiresIn: 1000000000000000 // in seconds
-				});
-				res.json({
-					success: true,
-					code: 200,
-					token: token,
-				});
-			} else {
-				res.send({
+		.exec(function(err, user) {
+			if (err) {
+				return res.send({
 					success: false,
-					message: 'Authentication failed. Passwords did not match.'
+					code: 400,
+					err: err
 				});
 			}
-		})
-	});
-}
+
+			if (!user) {
+				return res.send({
+					success: false,
+					code: 400,
+					err: "Authenticate failed. User not found"
+				});
+			}
+
+			user.comparePassword(req.body.password, function(err, isMatch) {
+				if (isMatch && !err) {
+				// Create token if the password matched and no error was thrown
+					var token = jwt.sign({email: user.email, _id: user._id}, secret, {
+						expiresIn: 1000000000000000 // in seconds
+					});
+					res.json({
+						success: true,
+						code: 200,
+						token: token,
+					});
+				} else {
+					res.send({
+						success: false,
+						message: 'Authentication failed. Passwords did not match.'
+					});
+				}
+			});
+		});
+};
