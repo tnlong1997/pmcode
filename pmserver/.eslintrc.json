@@ -7,15 +7,17 @@
     "rules": {
         "indent": [2, "tab"],
         "linebreak-style": [2, "unix"],
-        "semi": [1, "always"],
 				"comma-spacing": ["error", { "before": false, "after": true }],
 				"key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
 				"keyword-spacing": ["error", { "before": true, "after": true }],
 				"block-spacing": ["error", "always"],
 				"func-call-spacing": ["error", "never"],
-				"no-useless-escape": 0,
 				"semi-spacing": ["error", {"before": false, "after": true}],
 				"space-before-blocks": ["error", "always"],
-				"no-duplicate-imports": "error"
+				"no-duplicate-imports": "error",
+
+				"semi": [1, "always"],
+
+				"no-useless-escape": 0
     }
 }
