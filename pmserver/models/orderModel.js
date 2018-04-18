@@ -23,14 +23,14 @@ var orderSchema = new mongoose.Schema({
 	traveler_fee: {
 		type: Number, 
 		required: true,
-		trim : true
+		trim: true
 	},
 	total_fee: {
 		type: Number, 
 		required: true,
-		trim : true
+		trim: true
 	},
-	created_date_time : {
+	created_date_time: {
 		type: Date,
 		trim: true,
 		default: Date.now
