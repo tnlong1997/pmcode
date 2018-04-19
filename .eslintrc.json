@@ -17,6 +17,7 @@
 
 		"semi": [1, "always"],
 
-		"no-useless-escape": 0
+		"no-useless-escape": 0,
+		"no-console": 0
 	}
 }

@@ -1,0 +1,24 @@
+{
+  "name": "pmcode",
+  "version": "1.0.0",
+  "description": "Backend for Primor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "./node_modules/.bin/eslint **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tnlong1997/pmcode.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tnlong1997/pmcode/issues"
+  },
+  "homepage": "https://github.com/tnlong1997/pmcode#readme",
+  "dependencies": {
+    "eslint": "^4.19.1"
+  }
+}
