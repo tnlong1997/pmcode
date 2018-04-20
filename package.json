@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "./node_modules/.bin/eslint **/*.js",
-		"lint-fix": "./node_modules/.bin/eslint **/*.js --fix"
+    "lint": "./node_modules/.bin/eslint **/*.js",
+    "lint-fix": "./node_modules/.bin/eslint **/*.js --fix"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,8 @@
   "homepage": "https://github.com/tnlong1997/pmcode#readme",
   "dependencies": {
     "eslint": "^4.19.1"
+  },
+  "devDependencies": {
+    "htmlhint": "^0.9.13"
   }
 }
