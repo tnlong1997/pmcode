@@ -91,3 +91,75 @@ exports.create_order = function(req, res) {
 		});
 	}
 };
+
+exports.edit_order = function(req, res) {
+	Order.findById(req.params.id, function(order_err, order) {
+		if (order_err) {
+			return res.send({
+				success: false,
+				code: 400,
+				status: "Order not found",
+				err: order_err
+			});
+		}
+		Item.findById(order.item, function(item_err, item) {
+			if (item_err) {
+				return res.send({
+					success: false,
+					code: 400,
+					status: "Item not found",
+					err: item_err
+				});
+			}
+
+			item.update(req.body, function(item_update_err) {
+				if (item_update_err) {
+					return res.send({
+						success: false,
+						code: 400,
+						status: "Can't update item",
+						err: item_update_err
+					});
+				}
+			});
+		});
+
+		order.update(req.body, function(order_update_err) {
+			if (order_update_err) {
+				return res.send({
+					success: false,
+					code: 400,
+					status: "Can't update order",
+					err: order_update_err
+				});
+			}
+			return res.send({
+				success: true,
+				code: 200,
+				status: "Order update successful"
+			});
+
+		});
+
+	});
+};
+
+exports.delete_order = function(req, res) {
+	Order.remove({
+		_id: req.params.id
+	}, function(err) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				status: err
+			});
+		}
+
+		return res.send({
+			success: true,
+			code: 200,
+			status: "Successfully delete this order"
+		});
+	});
+};
