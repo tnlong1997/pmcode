@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "./node_modules/.bin/eslint **/*.js",
-		"lint-fix": "./node_modules/.bin/eslint **/*.js --fix"
+    "js-lint": "./node_modules/.bin/eslint **/*.js",
+    "js-lint-fix": "./node_modules/.bin/eslint **/*.js --fix",
+    "html-lint": "./node_modules/.bin/htmlhint **/*.html",
+    "css-lint": "./node_modules/.bin/stylelint **/*.css",
+    "lint": "npm run js-lint && npm run html-lint && npm run css-lint"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,10 @@
   "homepage": "https://github.com/tnlong1997/pmcode#readme",
   "dependencies": {
     "eslint": "^4.19.1"
+  },
+  "devDependencies": {
+    "htmlhint": "^0.9.13",
+    "stylelint": "^9.2.0",
+    "stylelint-config-recommended": "^2.1.0"
   }
 }
