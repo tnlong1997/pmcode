@@ -120,3 +120,68 @@ exports.user_log_in = function(req, res) {
 			});
 		});
 };
+
+// Change user's password
+exports.user_change_password = function(req, res) {
+
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No userId in req",
+		});
+	}
+
+	if (!req.body.newPassword) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No newPassword in req",
+		});
+	}
+
+	var encrytedNewPassword = bcrypt.hashSync(req.body.newPassword);
+
+	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err, user) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error changing password"
+			});
+		}
+
+		res.send({
+			success: true,
+			code: 200,
+			status: "Successfully change password"
+		});
+	});
+};
+
+// Delete user
+exports.user_delete = function(req, res) {
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No id in req",
+		});
+	}
+
+	User.findByIdAndRemove(req.params.id, function(err) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error deleting user",
+			});
+		}
+
+		res.send({
+			success: true,
+			code: 200,
+			status: "Successfully delete user"
+		});
+	});
+};
