@@ -13,8 +13,9 @@ router.post('/', userController.user_sign_up);
 router.post('/login', userController.user_log_in);
 
 /* PUT change user's password */
-
+router.put('/:id/password', userController.user_change_password);
 
 /* DELETE delete user's */
+router.delete('/:id', userController.user_delete);
 
 module.exports = router;
