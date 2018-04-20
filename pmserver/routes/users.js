@@ -12,4 +12,9 @@ router.post('/', userController.user_sign_up);
 /* POST user log in */
 router.post('/login', userController.user_log_in);
 
+/* PUT change user's password */
+
+
+/* DELETE delete user's */
+
 module.exports = router;
