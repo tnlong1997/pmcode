@@ -23,6 +23,7 @@
     "eslint": "^4.19.1"
   },
   "devDependencies": {
-    "htmlhint": "^0.9.13"
+    "htmlhint": "^0.9.13",
+    "stylelint": "^9.2.0"
   }
 }
