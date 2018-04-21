@@ -142,7 +142,7 @@ exports.user_change_password = function(req, res) {
 
 	var encrytedNewPassword = bcrypt.hashSync(req.body.newPassword);
 
-	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err, user) {
+	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err) {
 		if (err) {
 			return res.send({
 				success: false,
