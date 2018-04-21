@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "js-lint": "./node_modules/.bin/eslint **/*.js",
-    "js-lint-fix": "./node_modules/.bin/eslint **/*.js --fix",
-    "html-lint": "./node_modules/.bin/htmlhint **/*.html",
-    "css-lint": "./node_modules/.bin/stylelint **/*.css",
+    "js-lint": "./node_modules/.bin/eslint '**/*.js'",
+    "js-lint-fix": "./node_modules/.bin/eslint '**/*.js' --fix",
+    "html-lint": "./node_modules/.bin/htmlhint '**/*.html'",
+    "css-lint": "./node_modules/.bin/stylelint '**/*.css'",
     "lint": "npm run js-lint && npm run html-lint && npm run css-lint"
   },
   "repository": {
