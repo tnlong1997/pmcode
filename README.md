@@ -28,6 +28,12 @@ Backend for Primor
 	npm run css-lint
 	```
 
+* If there is some css lints, auto fix by using:\
+   in pmcode directory:
+	```
+	npm run css-lint-fix
+	```
+
 * Local html lint test:\
    in pmcode directory:
 	```
