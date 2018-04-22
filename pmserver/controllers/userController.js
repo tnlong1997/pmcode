@@ -182,6 +182,30 @@ exports.user_delete = function(req, res) {
 	});
 };
 
+// Get user's profile
+exports.user_get_profile = function(req, res) {
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No id in req",
+		});
+	}
+
+	User.findById(req.params.id, function(err, user) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error retrieving user's profile",
+			});
+		}
+
+		return res.send(user.profile);
+	});
+};
+
+
 //Update profile
 exports.user_update_profile = function(req, res) {
 	if (!req.params.id) {
