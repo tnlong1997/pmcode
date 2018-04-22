@@ -21,12 +21,8 @@ exports.user_list = function(req, res, next) {
 };
 
 exports.user_sign_up = function(req, res, next) {
-
 	var newUser = new User(
-		{
-			email: req.body.email,
-			password: bcrypt.hashSync(req.body.password),
-		}
+		req.body
 	);
 
 	// Check if user username and password is valid
