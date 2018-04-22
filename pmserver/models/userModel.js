@@ -31,6 +31,14 @@ userSchema.methods.comparePassword = function(inputPassword, callback) {
 	});
 };
 
+userSchema.virtual('createdAtTimestamp').get(function() {
+	return this.createdAt.getTime();
+});
+
+userSchema.virtual('updatedAtTimestamp').get(function() {
+	return this.updatedAt.getTime();
+});
+
 userSchema.plugin(uniqueValidator);
 
 //Export model
