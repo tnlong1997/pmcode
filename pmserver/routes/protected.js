@@ -3,7 +3,6 @@ var router = express.Router();
 
 var tokenAuthentication = require('../middlewares/tokenAuthentication');
 
-var users_protected = require('./users_protected');
 // Add tokenAuthentication as middleware
 router.use(tokenAuthentication);
 
