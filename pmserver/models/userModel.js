@@ -18,7 +18,8 @@ var userSchema = new Schema(
 			type: String,
 			required: [true, 'Password is required'],
 		},
-	}
+	},
+	{timestamps: true}
 );
 
 userSchema.methods.comparePassword = function(inputPassword, callback) {
@@ -29,6 +30,14 @@ userSchema.methods.comparePassword = function(inputPassword, callback) {
 		callback(null, isMatch);
 	});
 };
+
+userSchema.virtual('createdAtTimestamp').get(function() {
+	return this.createdAt.getTime();
+});
+
+userSchema.virtual('updatedAtTimestamp').get(function() {
+	return this.updatedAt.getTime();
+});
 
 userSchema.plugin(uniqueValidator);
 
