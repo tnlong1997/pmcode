@@ -9,6 +9,9 @@ router.get('/', userController.user_list);
 /* PUT change user's password */
 router.put('/:id/password', userController.user_change_password);
 
+/* PUT update user's profile */
+router.put('/:id/profile', userController.user_update_profile);
+
 /* DELETE delete user's */
 router.delete('/:id', userController.user_delete);
 
