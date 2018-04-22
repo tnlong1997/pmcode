@@ -181,3 +181,38 @@ exports.user_delete = function(req, res) {
 		});
 	});
 };
+
+//Update profile
+exports.user_update_profile = function(req, res) {
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No id in req",
+		});
+	}
+
+	if (!req.body) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No info to be updated",
+		});
+	}
+
+	User.findByIdAndUpdate(req.params.id, {$set: req.body}, function(err) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error updating profile",
+			});
+		}
+
+		res.send({
+			success: true,
+			code: 200,
+			status: "Success updating profile",
+		});
+	});
+};
