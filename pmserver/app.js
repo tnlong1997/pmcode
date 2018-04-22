@@ -8,10 +8,12 @@ var mongoose = require('mongoose');
 
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var orders = require('./routes/orders');
-var protect = require('./routes/protect');
+var Protected = require('./routes/protected');
+var users_protected = require('./routes/users_protected');
 var items = require('./routes/items');
+var Public = require('./routes/public');
+var users_public = require('./routes/users_public');
 
 var app = express();
 
@@ -37,9 +39,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/orders', orders);
-app.use('/protect', protect);
+app.use('/protected', Protected);
+app.use('/protected/users', users_protected);
+app.use('/public', Public);
+app.use('/public/users', users_public);
 app.use('/items', items);
 
 // catch 404 and forward to error handler

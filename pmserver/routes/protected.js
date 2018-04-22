@@ -11,4 +11,6 @@ router.get('/', function(req, res) {
 	return res.send('Protected primor routes');
 });
 
+// router.use('/users', users_protected);
+
 module.exports = router;
