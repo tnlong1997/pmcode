@@ -201,7 +201,11 @@ exports.user_get_profile = function(req, res) {
 			});
 		}
 
-		return res.send(user.profile);
+		return res.send({
+			success: false,
+			code: 200,
+			profile: user.profile
+		});
 	});
 };
 
