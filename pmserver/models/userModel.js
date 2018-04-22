@@ -18,6 +18,23 @@ var userSchema = new Schema(
 			type: String,
 			required: [true, 'Password is required'],
 		},
+		profile: {
+			firstName: {
+				type: String,
+				required: [true, "User's first name is required"],
+				default: "",
+			},
+			lastName: {
+				type: String,
+				required: [true, "User's last name is required"],
+				default: "",
+			},
+			dateOfBirth: {
+				type: Date,
+				required: [true, "User's date of birth is required"],
+				default: Date.now,
+			}
+		},
 	},
 	{timestamps: true}
 );
@@ -37,6 +54,10 @@ userSchema.virtual('createdAtTimestamp').get(function() {
 
 userSchema.virtual('updatedAtTimestamp').get(function() {
 	return this.updatedAt.getTime();
+});
+
+userSchema.virtual('dateOfBirthTimestamp').get(function() {
+	return this.dateOfBirth.getTime();
 });
 
 userSchema.plugin(uniqueValidator);

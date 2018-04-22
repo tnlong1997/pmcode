@@ -21,12 +21,8 @@ exports.user_list = function(req, res, next) {
 };
 
 exports.user_sign_up = function(req, res, next) {
-
 	var newUser = new User(
-		{
-			email: req.body.email,
-			password: bcrypt.hashSync(req.body.password),
-		}
+		req.body
 	);
 
 	// Check if user username and password is valid
@@ -182,6 +178,69 @@ exports.user_delete = function(req, res) {
 			success: true,
 			code: 200,
 			status: "Successfully delete user"
+		});
+	});
+};
+
+// Get user's profile
+exports.user_get_profile = function(req, res) {
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No id in req",
+		});
+	}
+
+	User.findById(req.params.id, function(err, user) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error retrieving user's profile",
+			});
+		}
+
+		return res.send({
+			success: false,
+			code: 200,
+			profile: user.profile
+		});
+	});
+};
+
+
+//Update profile
+exports.user_update_profile = function(req, res) {
+	if (!req.params.id) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No id in req",
+		});
+	}
+
+	if (!req.body) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: "No info to be updated",
+		});
+	}
+
+	User.findByIdAndUpdate(req.params.id, {$set: req.body}, function(err) {
+		if (err) {
+			return res.send({
+				success: false,
+				code: 400,
+				err: "Error updating profile",
+			});
+		}
+
+		res.send({
+			success: true,
+			code: 200,
+			status: "Success updating profile",
 		});
 	});
 };
