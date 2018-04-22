@@ -6,6 +6,9 @@ const userController = require('../controllers/userController');
 /* GET users listing. */
 router.get('/', userController.user_list);
 
+/* GET user's profile */
+router.get('/:id/profile', userController.user_get_profile);
+
 /* PUT change user's password */
 router.put('/:id/password', userController.user_change_password);
 
