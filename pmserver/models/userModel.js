@@ -18,7 +18,8 @@ var userSchema = new Schema(
 			type: String,
 			required: [true, 'Password is required'],
 		},
-	}
+	},
+	{timestamps: true}
 );
 
 userSchema.methods.comparePassword = function(inputPassword, callback) {
