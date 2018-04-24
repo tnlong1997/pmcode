@@ -4,7 +4,7 @@ var router = express.Router();
 const itemController = require('../controllers/itemController');
 
 /**
- * @api {get} /items Get the list of all item
+ * @api {get} /items Get the list of all item.
  * @apiVersion 0.1.0
  * @apiName GetItemList
  * @apiGroup Item
