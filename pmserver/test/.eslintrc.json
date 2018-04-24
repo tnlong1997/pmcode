@@ -1,0 +1,13 @@
+{
+	"overrides": [
+  	{
+			"env": {
+				"mocha": "true"
+			},
+			"files": "**/*.test.js",
+    	"rules": {
+      	"no-unused-vars": "off"
+    	}
+  	}
+	]
+}
