@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+
+var databaseConfig = require('./config/database');
 var index = require('./routes/index');
 var orders = require('./routes/orders');
 var Protected = require('./routes/protected');
@@ -17,7 +19,7 @@ var users_public = require('./routes/users_public');
 var app = express();
 
 //Set up mongoose connection
-var databaseUrl = 'mongodb://tnlong1997:bdragon7125..@ds041404.mlab.com:41404/primor';
+var databaseUrl = databaseConfig.dev;
 //databaseUrl = 'mongodb://localhost:27017';
 var mongoDB = databaseUrl;
 mongoose.connect(mongoDB);
