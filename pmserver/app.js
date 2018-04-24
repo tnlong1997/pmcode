@@ -6,10 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-<<<<<<< b882c99f777f148ae27a125efbf20cd39ad530f4
-
-=======
->>>>>>> Add documentation for get and create Item
+var databaseConfig = require('./config/database');
 var databaseConfig = require('./config/database');
 var index = require('./routes/index');
 var orders = require('./routes/orders');
