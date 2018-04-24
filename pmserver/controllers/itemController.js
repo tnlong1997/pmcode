@@ -6,7 +6,8 @@ exports.item_list = function(req, res) {
 			return res.send({
 				success: false,
 				code: 400,
-				status: err
+				status: "Unable to access to database",
+				err: err
 
 			});
 		}
