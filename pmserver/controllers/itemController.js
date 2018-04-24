@@ -92,7 +92,7 @@ exports.edit_item = function(req, res) {
 			return res.send({
 				success: true,
 				code: 200,
-				status: "Item update successful"
+				status: "Item update successful."
 			});
 
 		});

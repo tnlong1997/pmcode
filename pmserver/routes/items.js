@@ -4,7 +4,7 @@ var router = express.Router();
 const itemController = require('../controllers/itemController');
 
 /**
- * @api {get} /items Get the list of all item.
+ * @api {get} /items Get the list of all item
  * @apiVersion 0.1.0
  * @apiName GetItemList
  * @apiGroup Item
@@ -47,7 +47,7 @@ router.get('/', itemController.item_list);
 
 /**
  *
- * @api {post} /items Create new Item.
+ * @api {post} /items Create new Item
  * @apiVersion 0.1.0
  * @apiName CreateItem
  * @apiGroup Item
@@ -71,15 +71,70 @@ router.get('/', itemController.item_list);
  * 		{
  * 			success: true,
  * 			code: 200,
- * 			status: "Item list received."
+ * 			status: "Item Created."
  * 		}
  */
 router.post('/', itemController.create_item);
 
-// PUT edit item
+/**
+ *
+ * @api {put} /items/:id Update an Item
+ * @apiVersion 0.1.0
+ * @apiName UpdateItem
+ * @apiGroup Item
+ * @apiPermission none
+ *
+ * @apiDescription Update an Item.
+ *
+ * @apiParam {Number} id Item ID.
+ * @apiParam {String} item_name Name of the item.
+ * @apiParam {String} item_description Description of the item. 
+ * @apiParam {Number} item_price Price of the item.
+ * 
+ * @apiSuccess {Boolean} success Status indicator.
+ * @apiSuccess {Number} code Status code.
+ * @apiSuccess {String} status Status description.
+ *
+ * @apiError DatabaseError Error with database.
+ * @apiError ItemNotFound Cannot find item by ID.
+ *
+ * @apiSuccessExample Success-Response:
+ * 		HTTP/1.1 200 OK
+ * 		{
+ * 			success: true,
+ * 			code: 200,
+ * 			status: "Item update successful."
+ * 		}
+ */
 router.put('/:id', itemController.edit_item);
 
-// DELETE delete item
+/**
+ *
+ * @api {delete} /items/:id Delete an Item
+ * @apiVersion 0.1.0
+ * @apiName DeleteItem
+ * @apiGroup Item
+ * @apiPermission admin
+ *
+ * @apiDescription Delete an Item.
+ *
+ * @apiParam {Number} id Item ID.
+ * 
+ * @apiSuccess {Boolean} success Status indicator.
+ * @apiSuccess {Number} code Status code.
+ * @apiSuccess {String} status Status description.
+ *
+ * @apiError DatabaseError Error with database.
+ * @apiError ItemNotFound Cannot find item by ID.
+ *
+ * @apiSuccessExample Success-Response:
+ * 		HTTP/1.1 200 OK
+ * 		{
+ * 			success: true,
+ * 			code: 200,
+ * 			status: "Successfully delete this item."
+ * 		}
+ */
 router.delete('/:id', itemController.delete_item);
 
 module.exports = router;
