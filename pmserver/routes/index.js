@@ -12,12 +12,12 @@ var router = express.Router();
  * @apiSuccess {String} status Status description.
  *
  * @apiSuccessExample Success-Response:
-	 	HTTP/1.1 200 OK
-	 	{
-	 		success: true,
-	 		code: 200,
-	 		status: "Welcome to primor."
-	 	}
+ *	 	HTTP/1.1 200 OK
+ *	 	{
+ *	 		success: true,
+ *	 		code: 200,
+ *	 		status: "Welcome to primor."
+ *	 	}
  * 
  *
  * @apiError {Boolean} success Status indicator.
