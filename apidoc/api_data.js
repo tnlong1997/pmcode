@@ -762,7 +762,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\t\tHTTP/1.1 200 OK\n\t\t{\n\t\t\tsuccess: true,\n\t\t\tcode: 200,\n\t\t\tstatus: \"Item list received.\",\n\t\t\torders: {\n\t\t\t\t\t\"created_date_time\": \"2018-04-24T18:36:46.138Z\",\n            \t\t\"_id\": \"5adf793e33a7f13becf102be\",\n            \t\t\"order_name\": \"Updated Name Check\",\n            \t\t\"item\": \"5adf793e33a7f13becf102bd\",\n            \t\t\"traveler_fee\": 300,\n            \t\t\"total_fee\": 0\n\t\t\t\t\t}\n\t\t}",
+          "content": "\t\tHTTP/1.1 200 OK\n\t\t{\n\t\t\tsuccess: true,\n\t\t\tcode: 200,\n\t\t\tstatus: \"Item list received.\",\n\t\t\torders: {\n\t\t\t\t\t\"created_date_time\": \"2018-04-24T18:36:46.138Z\",\n          \t\t\"_id\": \"5adf793e33a7f13becf102be\",\n          \t\t\"order_name\": \"Updated Name Check\",\n          \t\t\"item\": \"5adf793e33a7f13becf102bd\",\n          \t\t\"traveler_fee\": 300,\n          \t\t\"total_fee\": 0\n\t\t\t\t\t}\n\t\t}",
           "type": "json"
         }
       ]

@@ -8,7 +8,7 @@ const orderController = require('../controllers/orderController');
  * @apiVersion 0.1.0
  * @apiName GetOrderList
  * @apiGroup Order
- * @apiPermission none
+ * @apiPermission user
  *
  * @apiDescription This will return the list of all order.
  * 
@@ -53,7 +53,7 @@ router.get('/', orderController.order_list);
  * @apiVersion 0.1.0
  * @apiName CreateOrder
  * @apiGroup Order
- * @apiPermission none
+ * @apiPermission user
  *
  * @apiDescription Create new order.
  *
@@ -86,7 +86,7 @@ router.post('/', orderController.create_order);
  * @apiVersion 0.1.0
  * @apiName UpdateOrder
  * @apiGroup Order
- * @apiPermission none
+ * @apiPermission user
  *
  * @apiDescription Update an Order.
  *
@@ -121,7 +121,7 @@ router.put('/:id', orderController.edit_order);
  * @apiVersion 0.1.0
  * @apiName DeleteOrder
  * @apiGroup Order
- * @apiPermission none
+ * @apiPermission user
  *
  * @apiDescription Delete an Order.
  *
