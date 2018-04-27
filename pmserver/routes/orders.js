@@ -27,11 +27,11 @@ const orderController = require('../controllers/orderController');
  * 			status: "Item list received.",
  * 			orders: {
  *					"created_date_time": "2018-04-24T18:36:46.138Z",
- *           		"_id": "5adf793e33a7f13becf102be",
- *           		"order_name": "Updated Name Check",
- *           		"item": "5adf793e33a7f13becf102bd",
- *           		"traveler_fee": 300,
- *           		"total_fee": 0
+ *					"_id": "5adf793e33a7f13becf102be",
+ *					"order_name": "Updated Name Check",
+ *					"item": "5adf793e33a7f13becf102bd",
+ *					"traveler_fee": 300,
+ *					"total_fee": 0
  * 					}
  * 		}
  *

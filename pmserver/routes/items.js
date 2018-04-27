@@ -27,9 +27,9 @@ const itemController = require('../controllers/itemController');
  * 			status: "Item list received.",
  * 			items: {
  *					"_id": "5adaa1a33ab44a3d18f41bd9",
-            		"item_name": "New Item",
-            		"item_description": "check",
-            		"item_price": 40
+ *					"item_name": "New Item",
+ *					"item_description": "check",
+ *					"item_price": 40
  * 					}
  * 		}
  *

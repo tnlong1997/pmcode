@@ -21,6 +21,7 @@ const userController = require('../controllers/userController');
  * 
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
+ * @apiSuccess {String} user_id New user's ID.
  *
  * @apiError DatabaseError Error with database.
  * @apiError RequiredFieldMissing Required to fill all fields.
@@ -31,12 +32,42 @@ const userController = require('../controllers/userController');
  * 		{
  * 			success: true,
  * 			code: 200,
- * 			status: "Order and Item Created."
+ * 			user_id: "this_will_be_the_id"
  * 		}
  */
 router.post('/', userController.user_sign_up);
 
-/* POST user log in */
+/**
+ *
+ * @api {post} /public/users/login Login new user
+ * @apiVersion 0.1.0
+ * @apiName LoginUser
+ * @apiGroup User
+ * @apiPermission none
+ *
+ * @apiDescription Login new user.
+ *
+ * @apiParam {String} email Email of user.
+ * @apiParam {String} password Password for this account.
+ * 
+ * @apiSuccess {Boolean} success Status indicator.
+ * @apiSuccess {Number} code Status code.
+ * @apiSuccess {String} token New user's token.
+ *
+ * @apiError DatabaseError Error with database.
+ * @apiError RequiredFieldMissing Required to fill all fields.
+ * @apiError InvalidInput Inputs for required field invalid.
+ * @apiError WrongPassword Input password incorrect.
+ * @apiError UserNotFound User cannot be found by database.
+ *
+ * @apiSuccessExample Success-Response:
+ * 		HTTP/1.1 200 OK
+ * 		{
+ * 			success: true,
+ * 			code: 200,
+ * 			token: "this_will_be_the_token"
+ * 		}
+ */
 router.post('/login', userController.user_log_in);
 
 module.exports = router;

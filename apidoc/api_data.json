@@ -86,6 +86,96 @@
   },
   {
     "type": "get",
+    "url": "/protected",
+    "title": "Get the protected route page",
+    "version": "0.1.0",
+    "name": "GetPrivateIndex",
+    "group": "IndexPages",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"Welcome to primor protected routes\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status description.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "err",
+            "description": "<p>Error objects.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n\tsuccess: false,\n\tcode: 400,\n\tstatus: \"Unable to get the protected index pages\",\n\terr: {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "pmserver/routes/protected.js",
+    "groupTitle": "IndexPages"
+  },
+  {
+    "type": "get",
     "url": "/public",
     "title": "Get the public route page",
     "version": "0.1.0",
@@ -348,7 +438,7 @@
   {
     "type": "get",
     "url": "/items",
-    "title": "Get the list of all item",
+    "title": "Get the list of all item.",
     "version": "0.1.0",
     "name": "GetItemList",
     "group": "Item",
@@ -394,7 +484,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\t\tHTTP/1.1 200 OK\n\t\t{\n\t\t\tsuccess: true,\n\t\t\tcode: 200,\n\t\t\tstatus: \"Item list received.\",\n\t\t\titems: {\n\t\t\t\t\t\"_id\": \"5adaa1a33ab44a3d18f41bd9\",\n            \t\t\"item_name\": \"New Item\",\n            \t\t\"item_description\": \"check\",\n            \t\t\"item_price\": 40\n\t\t\t\t\t}\n\t\t}",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"Item list received.\",\n\titems: {\n\t\t\t\"_id\": \"5adaa1a33ab44a3d18f41bd9\",\n\t\t\t\"item_name\": \"New Item\",\n\t\t\t\"item_description\": \"check\",\n\t\t\t\"item_price\": 40\n\t\t\t}\n}",
           "type": "json"
         }
       ]
@@ -532,7 +622,7 @@
     "group": "Order",
     "permission": [
       {
-        "name": "none"
+        "name": "user"
       }
     ],
     "description": "<p>Create new order.</p>",
@@ -641,7 +731,7 @@
     "group": "Order",
     "permission": [
       {
-        "name": "none"
+        "name": "user"
       }
     ],
     "description": "<p>Delete an Order.</p>",
@@ -722,7 +812,7 @@
     "group": "Order",
     "permission": [
       {
-        "name": "none"
+        "name": "user"
       }
     ],
     "description": "<p>This will return the list of all order.</p>",
@@ -762,7 +852,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\t\tHTTP/1.1 200 OK\n\t\t{\n\t\t\tsuccess: true,\n\t\t\tcode: 200,\n\t\t\tstatus: \"Item list received.\",\n\t\t\torders: {\n\t\t\t\t\t\"created_date_time\": \"2018-04-24T18:36:46.138Z\",\n          \t\t\"_id\": \"5adf793e33a7f13becf102be\",\n          \t\t\"order_name\": \"Updated Name Check\",\n          \t\t\"item\": \"5adf793e33a7f13becf102bd\",\n          \t\t\"traveler_fee\": 300,\n          \t\t\"total_fee\": 0\n\t\t\t\t\t}\n\t\t}",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"Item list received.\",\n\torders: {\n\t\t\t\"created_date_time\": \"2018-04-24T18:36:46.138Z\",\n\t\t\t\"_id\": \"5adf793e33a7f13becf102be\",\n\t\t\t\"order_name\": \"Updated Name Check\",\n\t\t\t\"item\": \"5adf793e33a7f13becf102bd\",\n\t\t\t\"traveler_fee\": 300,\n\t\t\t\"total_fee\": 0\n\t\t\t}\n}",
           "type": "json"
         }
       ]
@@ -798,7 +888,7 @@
     "group": "Order",
     "permission": [
       {
-        "name": "none"
+        "name": "user"
       }
     ],
     "description": "<p>Update an Order.</p>",
@@ -910,5 +1000,653 @@
     },
     "filename": "pmserver/routes/orders.js",
     "groupTitle": "Order"
+  },
+  {
+    "type": "put",
+    "url": "/protected/users/:id/password",
+    "title": "Change user's password",
+    "version": "0.1.0",
+    "name": "ChangePassword",
+    "group": "User",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Change password of current user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>New password</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"User password update successful.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Error with database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Cannot find item by ID.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RequiredFieldMissing",
+            "description": "<p>Required to fill all fields.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "pmserver/routes/users_protected.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/protected/users/:id/profile",
+    "title": "Change user's profile",
+    "version": "0.1.0",
+    "name": "ChangeProfile",
+    "group": "User",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Change profile of current user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>New firstName.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>New lastName.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "dateOfBirth",
+            "description": "<p>New DOB.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"User profile update successful.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Error with database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Cannot find item by ID.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RequiredFieldMissing",
+            "description": "<p>Required to fill all fields.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "pmserver/routes/users_protected.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/protected/users/:id",
+    "title": "Delete user",
+    "version": "0.1.0",
+    "name": "DeleteUser",
+    "group": "User",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Delete current account.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>User ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Status description.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"User deleted.\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Error with database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>Cannot find item by ID.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RequiredFieldMissing",
+            "description": "<p>Required to fill all fields.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "pmserver/routes/users_protected.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/protected/",
+    "title": "Get the list of all user.",
+    "version": "0.1.0",
+    "name": "GetUserList",
+    "group": "User",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "description": "<p>This will return the list of all users and can only be accessed by admin</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>List of users.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "\t\tHTTP/1.1 200 OK\n\t\t{\n\t\t\tsuccess: true,\n\t\t\tcode: 200,\n\t\t\tstatus: \"User list received.\",\n\t\t\titems: {\n\t\t\t\t\t\"_id\": \"5adaa1a33ab44a3d18f41bd9\",\n            \t\t\"email\": \"hoangnguyen@gmail.com\",\n            \t\t\"password\": \"check\",\n            \t\t\"profile\" : {}\n\t\t\t\t\t}\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Unable to access to database.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n\tsuccess: false,\n\tcode: 400,\n\tstatus: \"Unable to access to database\",\n\terr: DatabaseError\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "pmserver/routes/users_protected.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/protected/users/:id/profile",
+    "title": "Get the profile of current user.",
+    "version": "0.1.0",
+    "name": "GetUserProfile",
+    "group": "User",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Get the profile of the current user.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "profile",
+            "description": "<p>Profile of current user.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tstatus: \"Profile received.\",\n\tprofile: {}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Unable to access to database.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n\tsuccess: false,\n\tcode: 400,\n\tstatus: \"Unable to access to database\",\n\terr: DatabaseError\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "pmserver/routes/users_protected.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/public/users/login",
+    "title": "Login new user",
+    "version": "0.1.0",
+    "name": "LoginUser",
+    "group": "User",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "description": "<p>Login new user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of user.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password for this account.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>New user's token.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\ttoken: \"this_will_be_the_token\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Error with database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RequiredFieldMissing",
+            "description": "<p>Required to fill all fields.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InvalidInput",
+            "description": "<p>Inputs for required field invalid.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "WrongPassword",
+            "description": "<p>Input password incorrect.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "UserNotFound",
+            "description": "<p>User cannot be found by database.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "pmserver/routes/users_public.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/public/users",
+    "title": "Sign up new user",
+    "version": "0.1.0",
+    "name": "SignUpUser",
+    "group": "User",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "description": "<p>Sign up new user.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of user.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Password for this account.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>User's firstname.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>User's lastName.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "dateOfBirth",
+            "description": "<p>User's DOB.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "success",
+            "description": "<p>Status indicator.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Status code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_id",
+            "description": "<p>New user's ID.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n\tsuccess: true,\n\tcode: 200,\n\tuser_id: \"this_will_be_the_id\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "DatabaseError",
+            "description": "<p>Error with database.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "RequiredFieldMissing",
+            "description": "<p>Required to fill all fields.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InvalidInput",
+            "description": "<p>Inputs for required field invalid.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "pmserver/routes/users_public.js",
+    "groupTitle": "User"
   }
 ]
