@@ -21,6 +21,7 @@ exports.user_list = function(req, res, next) {
 };
 
 exports.user_sign_up = function(req, res, next) {
+	req.body.password = bcrypt.hashSync(req.body.password);
 	var newUser = new User(
 		req.body
 	);
