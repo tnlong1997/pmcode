@@ -35,7 +35,7 @@ var router = express.Router();
  *		}
  */
 router.get('/', function(req, res, err) {
-	if(err){
+	if (err) {
 		return res.send({
 			success: false,
 			code: 400,

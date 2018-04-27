@@ -44,8 +44,8 @@ router.get('/', function(req, res) {
 	// For testing
 	return res.send({
 		success: true,
-	 	code: 200,
-	 	status: "Welcome to primor protected routes"
+		code: 200,
+		status: "Welcome to primor protected routes"
 	});
 });
 
