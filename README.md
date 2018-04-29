@@ -8,6 +8,28 @@ Backend for Primor
 	api-doc -i pmserver/ -o api-doc/ -e node_modules/
 	```
 
+### Repo initial setup:
+
+* Require node and npm
+
+* npm setup:
+	+ In pmcode dir:
+	```
+	npm install
+	```
+
+	+ In pmserver dir:
+	```
+	npm install
+	```
+
+* Install git pre-push hooks:
+	+ In pmcode dir:
+	```
+	./scripts/install-hooks.bash
+	```
+
+
 ### In repo command:
 
 * Local overall lint test:\
@@ -44,10 +66,4 @@ Backend for Primor
    in pmcode directory:
 	```
 	npm run html-lint
-	```
-
-* Install git pre-push hook:\
-   in pmcode directory:
-	```
-	./scripts/install-hooks.bash
 	```
