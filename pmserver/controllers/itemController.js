@@ -6,7 +6,8 @@ exports.item_list = function(req, res) {
 			return res.send({
 				success: false,
 				code: 400,
-				status: err
+				status: "Unable to access to database",
+				err: err
 
 			});
 		}
@@ -91,7 +92,7 @@ exports.edit_item = function(req, res) {
 			return res.send({
 				success: true,
 				code: 200,
-				status: "Item update successful"
+				status: "Item update successful."
 			});
 
 		});

@@ -1,6 +1,12 @@
 # pmcode
 Backend for Primor
 ---------
+### API Documentation Command:
+
+* To generate API documentation:
+	```
+	api-doc -i pmserver/ -o api-doc/ -e node_modules/
+	```
 
 ### In repo command:
 

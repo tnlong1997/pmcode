@@ -9,7 +9,7 @@
     "js-lint-fix": "./node_modules/.bin/eslint '**/*.js' --fix",
     "html-lint": "./node_modules/.bin/htmlhint '**/*.html'",
     "css-lint": "./node_modules/.bin/stylelint '**/*.css'",
-		"css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
+    "css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
     "lint": "npm run js-lint && npm run html-lint && npm run css-lint"
   },
   "repository": {

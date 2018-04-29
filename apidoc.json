@@ -1,0 +1,8 @@
+{
+  "name": "Primor API Documentation",
+  "version": "0.1.0",
+  "description": "API Documentation for development",
+  "template": {
+  	"forceLanguage": "en"
+  }
+}
