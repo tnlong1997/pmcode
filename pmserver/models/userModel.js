@@ -44,7 +44,6 @@ userSchema.methods.comparePassword = function(inputPassword, callback) {
 		if (err) {
 			return callback(err);
 		}
-		console.log(1);
 		callback(null, isMatch);
 	});
 };
