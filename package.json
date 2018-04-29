@@ -11,7 +11,7 @@
     "css-lint": "./node_modules/.bin/stylelint '**/*.css'",
     "css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
     "lint": "npm run js-lint && npm run html-lint && npm run css-lint",
-    "apidoc": "apidoc -i pmserver/ -o apidoc/ -e node_modules/",
+    "apidoc": "./node_modules/.bin/apidoc -i pmserver/ -o apidoc/ -e node_modules/",
     "apidoc-deploy": "surge -p /apidoc/ -d primor-api.surge.sh"
   },
   "repository": {
@@ -30,6 +30,7 @@
     "surge": "^0.20.1"
   },
   "devDependencies": {
+    "apidoc": "^0.17.6",
     "htmlhint": "^0.9.13",
     "stylelint": "^9.2.0",
     "stylelint-config-recommended": "^2.1.0"
