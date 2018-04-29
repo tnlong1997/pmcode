@@ -47,7 +47,7 @@ app.use('/protected', Protected);
 app.use('/public/users', users_public);
 app.use('/protected/users', users_protected);
 
-app.use('/orders', orders);
+app.use('/protected/orders', orders);
 app.use('/items', items);
 
 // catch 404 and forward to error handler

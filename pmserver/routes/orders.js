@@ -4,21 +4,21 @@ var router = express.Router();
 const orderController = require('../controllers/orderController');
 
 /**
- * @api {get} /orders Get the list of all order
+ * @api {get} protected/orders Get the list of all order
  * @apiVersion 0.1.0
  * @apiName GetOrderList
  * @apiGroup Order
  * @apiPermission user
  *
  * @apiDescription This will return the list of all order.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  * @apiSuccess {Object} items List of orders.
  *
  * @apiError DatabaseError Unable to access to database.
- * 
+ *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
  * 		{
@@ -43,13 +43,13 @@ const orderController = require('../controllers/orderController');
  *			status: "Unable to access to database",
  *			err: DatabaseError
  *		}
- * 
+ *
  */
 router.get('/', orderController.order_list);
 
 /**
  *
- * @api {post} /orders Create new order
+ * @api {post} protected/orders Create new order
  * @apiVersion 0.1.0
  * @apiName CreateOrder
  * @apiGroup Order
@@ -60,9 +60,9 @@ router.get('/', orderController.order_list);
  * @apiParam {String} order_name Name of the order.
  * @apiParam {Number} traveler_fee Minimum fee for shipping (User's input)
  * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item. 
+ * @apiParam {String} item_description Description of the item.
  * @apiParam {Number} item_price Price of the item.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
@@ -82,7 +82,7 @@ router.post('/', orderController.create_order);
 
 /**
  *
- * @api {put} /orders/:id Update an Order
+ * @api {put} protected/orders/:id Update an Order
  * @apiVersion 0.1.0
  * @apiName UpdateOrder
  * @apiGroup Order
@@ -94,9 +94,9 @@ router.post('/', orderController.create_order);
  * @apiParam {String} order_name Name of the order.
  * @apiParam {Number} traveler_fee Minimum fee for shipping (User's input)
  * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item. 
+ * @apiParam {String} item_description Description of the item.
  * @apiParam {Number} item_price Price of the item.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
@@ -117,7 +117,7 @@ router.put('/:id', orderController.edit_order);
 
 /**
  *
- * @api {delete} /orders/:id Delete an Order
+ * @api {delete} protected/orders/:id Delete an Order
  * @apiVersion 0.1.0
  * @apiName DeleteOrder
  * @apiGroup Order
@@ -126,7 +126,7 @@ router.put('/:id', orderController.edit_order);
  * @apiDescription Delete an Order.
  *
  * @apiParam {Number} id Order ID.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
