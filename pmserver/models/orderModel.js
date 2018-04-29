@@ -2,31 +2,31 @@ var mongoose = require('mongoose');
 
 var orderSchema = new mongoose.Schema({
 	order_name: {
-		type: String, 
+		type: String,
 		required: true,
 		trim: true
 	},
 	buyer: {
-		type: mongoose.Schema.Types.ObjectId, 
-		ref: 'User'
-		//required: true //comment out before the use of jwt
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+		required: true
 	},
 	traveler: {
-		type: mongoose.Schema.Types.ObjectId, 
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
 	},
 	item: {
-		type: mongoose.Schema.Types.ObjectId, 
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Item',
 		required: true
 	},
 	traveler_fee: {
-		type: Number, 
+		type: Number,
 		required: true,
 		trim: true
 	},
 	total_fee: {
-		type: Number, 
+		type: Number,
 		required: true,
 		trim: true
 	},
