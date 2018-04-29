@@ -35,6 +35,14 @@ var userSchema = new Schema(
 				default: Date.now,
 			}
 		},
+		currentOrders: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Order',
+		}],
+		pastOrders: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Order',
+		}]
 	},
 	{timestamps: true}
 );
