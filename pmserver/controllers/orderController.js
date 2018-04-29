@@ -37,7 +37,7 @@ exports.create_order = function(req, res) {
 		&& req.body.item_description
 		&& req.body.item_price) {
 
-		var buyerId = req.decoded._id;
+		var buyerId = req.token._id;
 
 		//create new Item
 		var new_item = new Item({
