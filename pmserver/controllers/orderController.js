@@ -1,5 +1,6 @@
 var Order = require('../models/orderModel');
 var Item = require('../models/itemModel');
+var User = require('../models/userModel');
 
 exports.order_list = function(req, res) {
 	Order.find().exec(function(err, orders) {
@@ -36,6 +37,8 @@ exports.create_order = function(req, res) {
 		&& req.body.item_description
 		&& req.body.item_price) {
 
+		var buyerId = req.decoded._id;
+
 		//create new Item
 		var new_item = new Item({
 			item_name: req.body.item_name,
@@ -58,7 +61,8 @@ exports.create_order = function(req, res) {
 			item: new_item._id,
 			traveler_fee: req.body.traveler_fee,
 			total_fee: 0,									//total fee will be calculated later
-			created_date_time: Date.now()
+			created_date_time: Date.now(),
+			buyer: buyerId
 		});
 
 		new_order.save(function(order_error) {
@@ -69,14 +73,23 @@ exports.create_order = function(req, res) {
 					status: order_error
 				});
 			} else {
-				return res.send({
-					success: true,
-					code: 200,
-					status: "order and item created",
-					order_id: new_order._id,
-					item_id: new_item._id
-				});
+				User.findByIdAndUpdate(buyerId, {$addToSet: {currentOrders: new_order._id}}, function(err) {
+					if (err) {
+						return res.send({
+							success: false,
+							code: 400,
+							err: "Error adding order to buyer databases",
+						});
+					}
 
+					return res.send({
+						success: true,
+						code: 200,
+						status: "order and item created",
+						order_id: new_order._id,
+						item_id: new_item._id
+					});
+				});
 			}
 		});
 	} else {
