@@ -5,7 +5,12 @@ Backend for Primor
 
 * To generate API documentation:
 	```
-	api-doc -i pmserver/ -o api-doc/ -e node_modules/
+	npm run apidoc
+	```
+
+* To deploy API documentation to domain (primor-api.surge.sh):
+	```
+	npm run apidoc-deploy
 	```
 
 ### Repo initial setup:

@@ -10,7 +10,9 @@
     "html-lint": "./node_modules/.bin/htmlhint '**/*.html'",
     "css-lint": "./node_modules/.bin/stylelint '**/*.css'",
     "css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
-    "lint": "npm run js-lint && npm run html-lint && npm run css-lint"
+    "lint": "npm run js-lint && npm run html-lint && npm run css-lint",
+    "apidoc": "apidoc -i pmserver/ -o apidoc/ -e node_modules/",
+    "apidoc-deploy": "surge -p /apidoc/ -d primor-api.surge.sh"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,8 @@
   },
   "homepage": "https://github.com/tnlong1997/pmcode#readme",
   "dependencies": {
-    "eslint": "^4.19.1"
+    "eslint": "^4.19.1",
+    "surge": "^0.20.1"
   },
   "devDependencies": {
     "htmlhint": "^0.9.13",
