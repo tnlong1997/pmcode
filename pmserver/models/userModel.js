@@ -57,7 +57,7 @@ userSchema.methods.comparePassword = function(inputPassword, callback) {
 };
 
 userSchema.virtual('fullName').get(function() {
-	return this.firstName + this.lastName;
+	return this.profile.firstName + " " + this.profile.lastName;
 });
 
 userSchema.virtual('createdAtTimestamp').get(function() {
