@@ -4,12 +4,16 @@ var secret = require('../config/secret');
 var jwt = require('jsonwebtoken');
 
 // Display all user
-exports.user_list = function(req, res, next) {
+exports.user_list = function(req, res) {
 
 	User.find()
 		.exec(function(err, user_list) {
 			if (err) {
-				return next(err);
+				return res.send({
+					success: false,
+					code: 400,
+					err: err.message
+				});
 			}
 			res.send({
 				success: true,

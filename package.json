@@ -25,14 +25,13 @@
     "url": "https://github.com/tnlong1997/pmcode/issues"
   },
   "homepage": "https://github.com/tnlong1997/pmcode#readme",
-  "dependencies": {
-    "eslint": "^4.19.1",
-    "surge": "^0.20.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "apidoc": "^0.17.6",
+    "eslint": "^4.19.1",
     "htmlhint": "^0.9.13",
     "stylelint": "^9.2.0",
-    "stylelint-config-recommended": "^2.1.0"
+    "stylelint-config-recommended": "^2.1.0",
+    "surge": "^0.20.1"
   }
 }
