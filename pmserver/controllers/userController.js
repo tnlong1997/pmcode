@@ -147,7 +147,7 @@ exports.user_change_password = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				err: "Error changing password"
 			});
 		}
@@ -174,7 +174,7 @@ exports.user_delete = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				err: "Error deleting user",
 			});
 		}
@@ -201,7 +201,7 @@ exports.user_get_profile = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 601,
 				err: "Error retrieving user's profile",
 			});
 		}
@@ -237,7 +237,7 @@ exports.user_update_profile = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				err: "Error updating profile",
 			});
 		}
