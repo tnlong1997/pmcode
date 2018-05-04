@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
 			if (err) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 498,
 					err: 'Failed to authenticate token.'
 				});
 			} else {
@@ -29,7 +29,7 @@ module.exports = function(req, res, next) {
 		// if there is no token, return an error
 		return res.send({
 			success: false,
-			code: 400,
+			code: 499,
 			err: 'No token provided.'
 		});
 
