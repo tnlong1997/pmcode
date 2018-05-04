@@ -1,21 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
-const orderController = require('../controllers/orderController');
+const tripController = require('../controllers/tripController');
 
 /**
- * @api {get} protected/orders Get the list of all order
+ * @api {get} protected/trips Get the list of all trip
  * @apiVersion 0.1.0
- * @apiName GetOrderList
- * @apiGroup Order
+ * @apiName GetTripList
+ * @apiGroup Trip
  * @apiPermission admin
  *
- * @apiDescription This will return the list of all order.
+ * @apiDescription This will return the list of all trips.
  *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
- * @apiSuccess {Object} items List of orders.
+ * @apiSuccess {Object} items List of trips.
  *
  * @apiError 400 Bad Request
  * @apiError 498 Invalid token
@@ -29,13 +29,11 @@ const orderController = require('../controllers/orderController');
  * 			success: true,
  * 			code: 200,
  * 			status: "Item list received.",
- * 			orders: {
- *					"created_date_time": "2018-04-24T18:36:46.138Z",
- *					"_id": "5adf793e33a7f13becf102be",
- *					"order_name": "Updated Name Check",
- *					"item": "5adf793e33a7f13becf102bd",
- *					"traveler_fee": 300,
- *					"total_fee": 0
+ * 			trips: {
+ *					"departureDate" : "2012 Jan 02",
+ *					"arrivalDate": "2012 Jan 03",
+ *					"departureAirport": "HAN",
+ *					"arrivalAirport": "JFK"
  * 					}
  * 		}
  *
@@ -49,23 +47,23 @@ const orderController = require('../controllers/orderController');
  *		}
  *
  */
-router.get('/', orderController.order_list);
+router.get('/', tripController.trip_list);
 
 /**
  *
- * @api {post} protected/orders Create new order
+ * @api {post} protected/trips Create new trip
  * @apiVersion 0.1.0
- * @apiName CreateOrder
- * @apiGroup Order
+ * @apiName CreateTrip
+ * @apiGroup Trip
  * @apiPermission user
  *
- * @apiDescription Create new order.
+ * @apiDescription Create new Trip.
  *
- * @apiParam {String} order_name Name of the order.
- * @apiParam {Number} traveler_fee Minimum fee for shipping (User's input)
- * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item.
- * @apiParam {Number} item_price Price of the item.
+ * @apiParam {Date} departure_date Date of departure.
+ * @apiParam {Date} arrival_date Date of arrival.
+ * @apiParam {String} departure_airport Name of the airport the owner will depart.
+ * @apiParam {String} arrival_airport Name of the airport the owner will arrive.
+ * @apiParam {Object} user Reference to the owner.
  *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
@@ -82,27 +80,26 @@ router.get('/', orderController.order_list);
  * 		{
  * 			success: true,
  * 			code: 200,
- * 			status: "Order and Item Created."
+ * 			status: "Created trip successfully"
  * 		}
  */
-router.post('/', orderController.create_order);
+router.post('/', tripController.create_trip);
 
 /**
  *
- * @api {put} protected/orders/:id Update an Order
+ * @api {put} protected/trips/:id Update a Trip
  * @apiVersion 0.1.0
- * @apiName UpdateOrder
- * @apiGroup Order
+ * @apiName UpdateTrip
+ * @apiGroup Trip
  * @apiPermission user
  *
- * @apiDescription Update an Order.
+ * @apiDescription Update a Trip.
  *
- * @apiParam {Number} id Order ID.
- * @apiParam {String} order_name Name of the order.
- * @apiParam {Number} traveler_fee Minimum fee for shipping (User's input)
- * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item.
- * @apiParam {Number} item_price Price of the item.
+ * @apiParam {Number} id Trip ID.
+ * @apiParam {Date} departure_date Date of departure.
+ * @apiParam {Date} arrival_date Date of arrival.
+ * @apiParam {String} departure_airport Name of the airport the owner will depart.
+ * @apiParam {String} arrival_airport Name of the airport the owner will arrive.
  *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
@@ -119,22 +116,22 @@ router.post('/', orderController.create_order);
  * 		{
  * 			success: true,
  * 			code: 200,
- * 			status: "Order update successful."
+ * 			status: "Updated trip successfully."
  * 		}
  */
-router.put('/:id', orderController.edit_order);
+router.put('/:id', tripController.edit_trip);
 
 /**
  *
- * @api {delete} protected/orders/:id Delete an Order
+ * @api {delete} protected/trips/:id Delete a Trip
  * @apiVersion 0.1.0
- * @apiName DeleteOrder
- * @apiGroup Order
+ * @apiName DeleteTrip
+ * @apiGroup Trip
  * @apiPermission user
  *
- * @apiDescription Delete an Order.
+ * @apiDescription Delete a Trip.
  *
- * @apiParam {Number} id Order ID.
+ * @apiParam {Number} id Trip ID.
  *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
@@ -151,9 +148,9 @@ router.put('/:id', orderController.edit_order);
  * 		{
  * 			success: true,
  * 			code: 200,
- * 			status: "Successfully delete this order."
+ * 			status: "Deleted trip successfully"
  * 		}
  */
-router.delete('/:id', orderController.delete_order);
+router.delete('/:id', tripController.delete_trip);
 
 module.exports = router;
