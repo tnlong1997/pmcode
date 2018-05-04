@@ -112,11 +112,17 @@ exports.user_log_in = function(req, res) {
 						code: 200,
 						token: token,
 					});
-				} else {
+				} else if (!isMatch) {
 					res.send({
 						success: false,
 						code: 610,
-						message: 'Authentication failed. Passwords did not match.'
+						err: 'Authentication failed. Passwords did not match.'
+					});
+				} else {
+					res.send({
+						success: false,
+						code: 600,
+						err: 'Database Error',
 					});
 				}
 			});
@@ -144,13 +150,21 @@ exports.user_change_password = function(req, res) {
 
 	var encrytedNewPassword = bcrypt.hashSync(req.body.newPassword);
 
-	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err) {
+	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err, user) {
 		if (err) {
 			return res.send({
 				success: false,
 				code: 600,
 				err: "Error changing password"
 			});
+		}
+
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 601,
+				err: "Can't find user with given ID",
+			})
 		}
 
 		res.send({
@@ -171,13 +185,21 @@ exports.user_delete = function(req, res) {
 		});
 	}
 
-	User.findByIdAndRemove(req.params.id, function(err) {
+	User.findByIdAndRemove(req.params.id, function(err, user) {
 		if (err) {
 			return res.send({
 				success: false,
 				code: 600,
 				err: "Error deleting user",
 			});
+		}
+
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 601,
+				err: "Can't find user with given ID"
+			})
 		}
 
 		res.send({
@@ -202,8 +224,16 @@ exports.user_get_profile = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 601,
+				code: 600,
 				err: "Error retrieving user's profile",
+			});
+		}
+
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 601,
+				err: "Can't find user with given ID",
 			});
 		}
 
@@ -234,12 +264,20 @@ exports.user_update_profile = function(req, res) {
 		});
 	}
 
-	User.findByIdAndUpdate(req.params.id, {$set: req.body}, function(err) {
+	User.findByIdAndUpdate(req.params.id, {$set: req.body}, function(err, user) {
 		if (err) {
 			return res.send({
 				success: false,
 				code: 600,
 				err: "Error updating profile",
+			});
+		}
+
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 601,
+				err: "Can't find user with given ID",
 			});
 		}
 
