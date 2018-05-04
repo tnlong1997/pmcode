@@ -56,6 +56,7 @@ router.post('/', userController.user_sign_up);
  * @apiError 400 Bad Request
  * @apiError 600 Database error
  * @apiError 601 Unable to find items with given ID
+ * @apiError 610 Wrong password 
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
