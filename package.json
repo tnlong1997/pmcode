@@ -12,7 +12,7 @@
     "css-lint-fix": "./node_modules/.bin/stylelint '**/*.css' --fix",
     "lint": "npm run js-lint && npm run html-lint && npm run css-lint",
     "apidoc": "./node_modules/.bin/apidoc -i pmserver/ -o apidoc/ -e node_modules/",
-    "apidoc-deploy": "surge -p apidoc/ -d primor-api.surge.sh"
+    "apidoc-deploy": "npm run apidoc && surge -p apidoc/ -d primor-api.surge.sh"
   },
   "repository": {
     "type": "git",
