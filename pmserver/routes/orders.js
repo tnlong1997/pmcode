@@ -8,7 +8,7 @@ const orderController = require('../controllers/orderController');
  * @apiVersion 0.1.0
  * @apiName GetOrderList
  * @apiGroup Order
- * @apiPermission user
+ * @apiPermission admin
  *
  * @apiDescription This will return the list of all order.
  *
@@ -40,10 +40,10 @@ const orderController = require('../controllers/orderController');
  * 		}
  *
  * @apiErrorExample Error-Response:
- * 		HTTP/1.1 400 Bad Request
+ * 		HTTP/1.1 600 Database Error
  *		{
  *			success: false,
- *			code: 400,
+ *			code: 600,
  *			status: "Unable to access to database",
  *			err: DatabaseError
  *		}

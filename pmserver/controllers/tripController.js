@@ -31,10 +31,10 @@ exports.create_trip = function(req, res){
 	var owner_id = req.token._id;
 
 	var new_trip = new Trip({
-		departureDate: req.body.departureDate,
-		arrivalDate: req.body.arrivalDate,
-		departureAirport: req.body.departureAirport,
-		arrivalAirport: req.body.arrivalAirport,
+		departure_date: req.body.departure_date,
+		arrival_date: req.body.arrival_date,
+		departure_airport: req.body.departure_airport,
+		arrival_airport: req.body.arrival_airport,
 		user: owner_id
 	});
 
