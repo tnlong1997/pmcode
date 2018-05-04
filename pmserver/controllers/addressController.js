@@ -37,7 +37,6 @@ exports.create_address = function(req, res) {
 
 		var owner_id = req.token._id;
 
-		//create new Item
 		var new_address = new Address({
 			fullname: req.body.fullname,
 			address_1: req.body.address_1,
