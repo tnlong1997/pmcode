@@ -16,6 +16,7 @@ var items = require('./routes/items');
 var Public = require('./routes/public');
 var users_public = require('./routes/users_public');
 var trips = require('./routes/trips');
+// var addresses = require('./routes/address');
 
 var app = express();
 
@@ -52,6 +53,7 @@ app.use('/protected/orders', orders);
 app.use('/protected/items', items);
 
 app.use('/protected/trips', trips);
+// app.use('/protected/addresses', addresses);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -91,7 +91,7 @@ exports.edit_trip = function(req, res) {
 			});
 		}
 
-		if(!trip){
+		if (!trip) {
 			res.send({
 				success: false,
 				code: 601,
