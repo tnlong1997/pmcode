@@ -7,9 +7,8 @@ exports.order_list = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				status: err
-
 			});
 		}
 
@@ -50,7 +49,7 @@ exports.create_order = function(req, res) {
 			if (error) { 										//this error contains duplicated key.
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: error
 				});
 			}
@@ -69,7 +68,7 @@ exports.create_order = function(req, res) {
 			if (order_error) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: order_error
 				});
 			} else {
@@ -77,7 +76,7 @@ exports.create_order = function(req, res) {
 					if (err) {
 						return res.send({
 							success: false,
-							code: 400,
+							code: 600,
 							err: "Error adding order to buyer databases",
 						});
 					}
@@ -110,18 +109,35 @@ exports.edit_order = function(req, res) {
 		if (order_err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				status: "Order not found",
 				err: order_err
 			});
 		}
+
+		if (!order) {
+			return res.send({
+				success: false,
+				code: 601,
+				status: "Can't find order with given id"
+			});
+		}
+
 		Item.findById(order.item, function(item_err, item) {
 			if (item_err) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Item not found",
 					err: item_err
+				});
+			}
+
+			if (!item) {
+				return res.send({
+					success: false,
+					code: 601,
+					status: "Can't find item with given id"
 				});
 			}
 
@@ -141,7 +157,7 @@ exports.edit_order = function(req, res) {
 			if (order_update_err) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Can't update order",
 					err: order_update_err
 				});
@@ -164,7 +180,7 @@ exports.delete_order = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				status: err
 			});
 		}
