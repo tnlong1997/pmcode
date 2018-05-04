@@ -17,7 +17,11 @@ const orderController = require('../controllers/orderController');
  * @apiSuccess {String} status Status description.
  * @apiSuccess {Object} items List of orders.
  *
- * @apiError DatabaseError Unable to access to database.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -67,8 +71,11 @@ router.get('/', orderController.order_list);
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError RequiredFieldMissing Required to fill all fields.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -101,9 +108,11 @@ router.post('/', orderController.create_order);
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError OrderNotFound Cannot find order by ID.
- * @apiError ItemNotFound Cannot find item by ID.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -131,8 +140,11 @@ router.put('/:id', orderController.edit_order);
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError OrderNotFound Cannot find item by ID.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
