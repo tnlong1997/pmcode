@@ -28,10 +28,10 @@ exports.trip_list = function(req, res) {
 };
 
 exports.create_trip = function(req, res) {
-	if(req.body.departure_date &&
+	if (req.body.departure_date &&
 		req.body.arrival_date &&
 		req.body.departure_airport &&
-		req.body.arrival_airport){
+		req.body.arrival_airport) {
 		var owner_id = req.token._id;
 
 		var new_trip = new Trip({
