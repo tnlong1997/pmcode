@@ -11,14 +11,17 @@ const itemController = require('../controllers/itemController');
  * @apiPermission admin
  *
  * @apiDescription This will return the list of all items and can only be accessed by admin
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  * @apiSuccess {Object} items List of items.
  *
- * @apiError DatabaseError Unable to access to database.
- * 
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
  * 		{
@@ -41,7 +44,7 @@ const itemController = require('../controllers/itemController');
  *			status: "Unable to access to database",
  *			err: DatabaseError
  *		}
- * 
+ *
  */
 router.get('/', itemController.item_list);
 
@@ -56,12 +59,14 @@ router.get('/', itemController.item_list);
  * @apiDescription Create new Item.
  *
  * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item. 
+ * @apiParam {String} item_description Description of the item.
  * @apiParam {Number} item_price Price of the item.
- * 
- * @apiSuccess {Boolean} success Status indicator.
- * @apiSuccess {Number} code Status code.
- * @apiSuccess {String} status Status description.
+ *
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiError DatabaseError Error with database.
  * @apiError RequiredFieldMissing Required to fill all fields.
@@ -88,12 +93,14 @@ router.post('/', itemController.create_item);
  *
  * @apiParam {Number} id Item ID.
  * @apiParam {String} item_name Name of the item.
- * @apiParam {String} item_description Description of the item. 
+ * @apiParam {String} item_description Description of the item.
  * @apiParam {Number} item_price Price of the item.
- * 
- * @apiSuccess {Boolean} success Status indicator.
- * @apiSuccess {Number} code Status code.
- * @apiSuccess {String} status Status description.
+ *
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiError DatabaseError Error with database.
  * @apiError ItemNotFound Cannot find item by ID.
@@ -119,13 +126,12 @@ router.put('/:id', itemController.edit_item);
  * @apiDescription Delete an Item.
  *
  * @apiParam {Number} id Item ID.
- * 
- * @apiSuccess {Boolean} success Status indicator.
- * @apiSuccess {Number} code Status code.
- * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError ItemNotFound Cannot find item by ID.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
