@@ -11,51 +11,14 @@ var tripSchema = new mongoose.Schema({
 		required: true,
 		trim: true
 	},
+	//Will add address after parsing info from map API
 	departureAirport: {
 		type: String, 
 		required: true,
-		// name: {
-		// 	type: String,
-		// 	required: true
-		// },
-		// address: {
-		// 	street: {
-		// 		type: String, 
-		// 		required: true
-		// 	},
-		// 	city: {
-		// 		type: String,
-		// 		type: true
-		// 	},
-		// 	cc: {
-		// 		type: String,
-		// 		type: true
-		// 	}
-		// }
 	},
 	arrivalAirport: {
 		type: String,
 		required: true
-
-		// name: {
-		// 	type: String,
-		// 	required: true
-		// },
-		// address: {
-		// 	street: {
-		// 		type: String, 
-		// 		required: true
-		// 	},
-		// 	city: {
-		// 		type: String,
-		// 		type: true
-		// 	},
-		// 	cc: {
-		// 		type: String,
-		// 		type: true
-		// 	}
-		// }
-		
 	},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
