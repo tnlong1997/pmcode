@@ -47,7 +47,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.testUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
@@ -58,7 +58,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.wrongEmailFormatUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
@@ -69,7 +69,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.noPasswordUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
@@ -80,7 +80,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.noEmailUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
@@ -91,7 +91,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.noLastNameUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
@@ -102,7 +102,7 @@ describe('Users Public Routes', () => {
 				.send(usersTestData.noFirstNameUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(402);
+					res.body.code.should.be.eql(400);
 					done();
 				});
 		});
