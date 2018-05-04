@@ -28,44 +28,55 @@ exports.trip_list = function(req, res) {
 };
 
 exports.create_trip = function(req, res) {
-	var owner_id = req.token._id;
+	if(req.body.departure_date &&
+		req.body.arrival_date &&
+		req.body.departure_airport &&
+		req.body.arrival_airport){
+		var owner_id = req.token._id;
 
-	var new_trip = new Trip({
-		departure_date: req.body.departure_date,
-		arrival_date: req.body.arrival_date,
-		departure_airport: req.body.departure_airport,
-		arrival_airport: req.body.arrival_airport,
-		user: owner_id
-	});
+		var new_trip = new Trip({
+			departure_date: req.body.departure_date,
+			arrival_date: req.body.arrival_date,
+			departure_airport: req.body.departure_airport,
+			arrival_airport: req.body.arrival_airport,
+			user: owner_id
+		});
 
-	new_trip.validate(function(db_err) {
-		if (db_err) {
-			res.send({
-				success: false,
-				code: 600,
-				status: "Database error",
-				err: db_err
-			});
-		} else {
-			new_trip.save(function(db_err_2) {
-				if (db_err_2) {
-					res.send({
-						success: false,
-						code: 600,
-						status: "Database Error",
-						err: db_err_2
-					});
-				}
-
+		new_trip.validate(function(db_err) {
+			if (db_err) {
 				res.send({
-					success: true,
-					code: 200,
-					status: "Trip created successfully",
-					trip_id: new_trip
+					success: false,
+					code: 600,
+					status: "Database error",
+					err: db_err
 				});
-			});
-		}
-	});
+			} else {
+				new_trip.save(function(db_err_2) {
+					if (db_err_2) {
+						res.send({
+							success: false,
+							code: 600,
+							status: "Database Error",
+							err: db_err_2
+						});
+					}
+
+					res.send({
+						success: true,
+						code: 200,
+						status: "Trip created successfully",
+						trip_id: new_trip
+					});
+				});
+			}
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Missing Required Field"
+		});
+	}
 };
 
 
