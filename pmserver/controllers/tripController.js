@@ -1,6 +1,6 @@
 var Trip = require('../models/tripModel');
 
-exports.trip_list = function(req, res){
+exports.trip_list = function(req, res) {
 	Trip.find().exec(function(db_err, trips) {
 		if (db_err) {
 			return res.send({
@@ -10,7 +10,7 @@ exports.trip_list = function(req, res){
 			});
 		}
 
-		if (trips.length == 0){
+		if (trips.length == 0) {
 			res.send({
 				success: true,
 				code: 200,
@@ -22,12 +22,12 @@ exports.trip_list = function(req, res){
 				code: 200,
 				status: "Trips list received",
 				trips: trips
-			})
+			});
 		}
 	});
 };
 
-exports.create_trip = function(req, res){
+exports.create_trip = function(req, res) {
 	var owner_id = req.token._id;
 
 	var new_trip = new Trip({
@@ -39,16 +39,16 @@ exports.create_trip = function(req, res){
 	});
 
 	new_trip.validate(function(db_err) {
-		if(db_err){
+		if (db_err) {
 			res.send({
 				success: false,
 				code: 600,
 				status: "Database error",
 				err: db_err
 			});
-		} else{
-			new_trip.save(function(db_err_2){
-				if(db_err_2){
+		} else {
+			new_trip.save(function(db_err_2) {
+				if (db_err_2) {
 					res.send({
 						success: false,
 						code: 600,
