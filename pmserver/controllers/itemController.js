@@ -5,7 +5,7 @@ exports.item_list = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				status: "Unable to access to database",
 				err: err
 
@@ -41,10 +41,10 @@ exports.create_item = function(req, res) {
 		});
 
 		new_item.save(function(error) {
-			if (error) { 									
+			if (error) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Unable to save item",
 					err: error
 				});
@@ -74,16 +74,25 @@ exports.edit_item = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
-				status: "Item not found",
+				code: 600,
+				status: "Error with database",
 				err: err
 			});
 		}
+
+		if (!item) {
+			return res.send({
+				success: false,
+				code: 601,
+				status: "Item not found",
+			});
+		}
+
 		item.update(req.body, function(item_update_err) {
 			if (item_update_err) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Can't update item",
 					err: item_update_err
 				});
@@ -106,7 +115,7 @@ exports.delete_item = function(req, res) {
 		if (err) {
 			return res.send({
 				success: false,
-				code: 400,
+				code: 600,
 				status: err
 			});
 		}

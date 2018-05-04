@@ -36,7 +36,7 @@ exports.user_sign_up = function(req, res, next) {
 		if (err) {
 			res.send({
 				success: false,
-				code: 402,
+				code: 400,
 				err: err.message,
 			});
 			return false;
@@ -47,7 +47,7 @@ exports.user_sign_up = function(req, res, next) {
 				if (err) {
 					res.send({
 						success: false,
-						code: 400,
+						code: 600,
 						err: err,
 					});
 					return next(err);
@@ -88,7 +88,7 @@ exports.user_log_in = function(req, res) {
 			if (err) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					err: err
 				});
 			}
@@ -96,7 +96,7 @@ exports.user_log_in = function(req, res) {
 			if (!user) {
 				return res.send({
 					success: false,
-					code: 400,
+					code: 601,
 					err: "Authenticate failed. User not found"
 				});
 			}
@@ -115,6 +115,7 @@ exports.user_log_in = function(req, res) {
 				} else {
 					res.send({
 						success: false,
+						code: 610,
 						message: 'Authentication failed. Passwords did not match.'
 					});
 				}

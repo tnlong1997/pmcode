@@ -16,16 +16,15 @@ const userController = require('../controllers/userController');
  * @apiParam {String} email Email of user.
  * @apiParam {String} password Password for this account.
  * @apiParam {String} firstName User's firstname.
- * @apiParam {String} lastName User's lastName. 
+ * @apiParam {String} lastName User's lastName.
  * @apiParam {Date} dateOfBirth User's DOB.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} user_id New user's ID.
  *
- * @apiError DatabaseError Error with database.
- * @apiError RequiredFieldMissing Required to fill all fields.
- * @apiError InvalidInput Inputs for required field invalid.
+ * @apiError 400 Bad Request
+ * @apiError 600 Database error
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -49,16 +48,15 @@ router.post('/', userController.user_sign_up);
  *
  * @apiParam {String} email Email of user.
  * @apiParam {String} password Password for this account.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} token New user's token.
  *
- * @apiError DatabaseError Error with database.
- * @apiError RequiredFieldMissing Required to fill all fields.
- * @apiError InvalidInput Inputs for required field invalid.
- * @apiError WrongPassword Input password incorrect.
- * @apiError UserNotFound User cannot be found by database.
+ * @apiError 400 Bad Request
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
+ * @apiError 610 Wrong password 
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
