@@ -1,3 +1,12 @@
+exports.createdTestUser = {
+	email: 'createdUser@gmail.com',
+	password: 'createdUser',
+	profile: {
+		firstName: 'created',
+		lastName: 'user',
+	}
+};
+
 exports.testUser = {
 	email: 'testUser@gmail.com',
 	password: 'testUser',

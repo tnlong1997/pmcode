@@ -164,7 +164,7 @@ exports.user_change_password = function(req, res) {
 				success: false,
 				code: 601,
 				err: "Can't find user with given ID",
-			})
+			});
 		}
 
 		res.send({
@@ -199,7 +199,7 @@ exports.user_delete = function(req, res) {
 				success: false,
 				code: 601,
 				err: "Can't find user with given ID"
-			})
+			});
 		}
 
 		res.send({
