@@ -4,20 +4,21 @@ var router = express.Router();
 const userController = require('../controllers/userController');
 
 /**
- * @api {get} /protected/ Get the list of all user.
+ * @api {get} /protected/users Get the list of all user.
  * @apiVersion 0.1.0
  * @apiName GetUserList
  * @apiGroup User
  * @apiPermission admin
  *
  * @apiDescription This will return the list of all users and can only be accessed by admin
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {Object} data List of users.
  *
- * @apiError DatabaseError Unable to access to database.
- * 
+ * @apiError 400 Bad Request
+ * @apiError 600 Unable to access to database.
+ *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
  * 		{
@@ -36,11 +37,11 @@ const userController = require('../controllers/userController');
  * 		HTTP/1.1 400 Bad Request
  *		{
  *			success: false,
- *			code: 400,
+ *			code: 600,
  *			status: "Unable to access to database",
  *			err: DatabaseError
  *		}
- * 
+ *
  */
 router.get('/', userController.user_list);
 
@@ -52,13 +53,17 @@ router.get('/', userController.user_list);
  * @apiPermission user
  *
  * @apiDescription Get the profile of the current user.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {Object} profile Profile of current user.
  *
- * @apiError DatabaseError Unable to access to database.
- * 
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
+ *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
  * 		{
@@ -72,11 +77,11 @@ router.get('/', userController.user_list);
  * 		HTTP/1.1 400 Bad Request
  *		{
  *			success: false,
- *			code: 400,
+ *			code: 600,
  *			status: "Unable to access to database",
  *			err: DatabaseError
  *		}
- * 
+ *
  */
 router.get('/:id/profile', userController.user_get_profile);
 
@@ -89,17 +94,19 @@ router.get('/:id/profile', userController.user_get_profile);
  * @apiPermission user
  *
  * @apiDescription Change password of current user.
- * 
+ *
  * @apiParam {Number} id User ID.
  * @apiParam {String} password New password
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError UserNotFound Cannot find item by ID.
- * @apiError RequiredFieldMissing Required to fill all fields.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -120,19 +127,21 @@ router.put('/:id/password', userController.user_change_password);
  * @apiPermission user
  *
  * @apiDescription Change profile of current user.
- * 
+ *
  * @apiParam {Number} id User ID.
  * @apiParam {String} firstName New firstName.
  * @apiParam {String} lastName New lastName.
  * @apiParam {Date} dateOfBirth New DOB.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError UserNotFound Cannot find item by ID.
- * @apiError RequiredFieldMissing Required to fill all fields.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
@@ -153,16 +162,18 @@ router.put('/:id/profile', userController.user_update_profile);
  * @apiPermission user
  *
  * @apiDescription Delete current account.
- * 
+ *
  * @apiParam {Number} id User ID.
- * 
+ *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
  * @apiSuccess {String} status Status description.
  *
- * @apiError DatabaseError Error with database.
- * @apiError UserNotFound Cannot find item by ID.
- * @apiError RequiredFieldMissing Required to fill all fields.
+ * @apiError 400 Bad Request
+ * @apiError 498 Invalid token
+ * @apiError 499 Token required
+ * @apiError 600 Database error
+ * @apiError 601 Unable to find items with given ID
  *
  * @apiSuccessExample Success-Response:
  * 		HTTP/1.1 200 OK
