@@ -85,11 +85,20 @@ exports.edit_trip = function(req, res) {
 		if (find_id_err) {
 			return res.send({
 				success: false,
-				code: 601,
+				code: 600,
 				status: "Database CastError",
 				err: find_id_err
 			});
 		}
+
+		if(!trip){
+			res.send({
+				success: false,
+				code: 601,
+				status: "Can't find item"
+			});
+		}
+
 		trip.update(req.body, function(trip_update_err) {
 			if (trip_update_err) {
 				return res.send({
