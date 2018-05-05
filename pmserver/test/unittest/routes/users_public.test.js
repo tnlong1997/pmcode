@@ -14,15 +14,7 @@ const databaseConfig = require('../../../config/database');
 
 chai.use(chaiHttp);
 
-before(function(done) {
-	mockgoose.prepareStorage().then(function() {
-		mongoose.connect(databaseConfig.dev, function(err) {
-			done(err);
-		});
-	});
-});
-
-describe('Users Public Routes', () => {
+describe('Users Public Routes', function() {
 
 	describe('/POST users sign up - successful', () => {
 
