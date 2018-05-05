@@ -1,4 +1,5 @@
 var Item = require('../models/itemModel');
+var item_helpers = require('../middlewares/helpers/item_helpers');
 
 exports.item_list = function(req, res) {
 	Item.find().exec(function(err, item_list) {
@@ -34,33 +35,17 @@ exports.create_item = function(req, res) {
 		&& req.body.item_description
 		&& req.body.item_price) {
 
-		var new_item = new Item({
-			item_name: req.body.item_name,
-			item_description: req.body.item_description,
-			item_price: req.body.item_price
+		var new_item_id = item_helpers.create_item(req, res);
+
+		res.send({
+			success: true,
+			code: 200,
+			status: "Created item Successfully",
+			item_id: new_item_id
 		});
 
-		new_item.save(function(error) {
-			if (error) {
-				return res.send({
-					success: false,
-					code: 600,
-					status: "Unable to save item",
-					err: error
-				});
-			}
-
-			return res.send({
-				success: true,
-				code: 200,
-				status: "Item Created"
-			});
-		});
 	} else {
-		// Error handler in future.
-		// var err = new Error("All fields required");
-		// err.status = 400;
-		// return next(err);
+
 		return res.send({
 			success: false,
 			code: 400,
@@ -70,41 +55,14 @@ exports.create_item = function(req, res) {
 };
 
 exports.edit_item = function(req, res) {
-	Item.findById(req.params.id, function(err, item) {
-		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				status: "Error with database",
-				err: err
-			});
-		}
+	
+	var item_id = item_helpers.update_item(req, res, req.params.id);
 
-		if (!item) {
-			return res.send({
-				success: false,
-				code: 601,
-				status: "Item not found",
-			});
-		}
-
-		item.update(req.body, function(item_update_err) {
-			if (item_update_err) {
-				return res.send({
-					success: false,
-					code: 600,
-					status: "Can't update item",
-					err: item_update_err
-				});
-			}
-
-			return res.send({
-				success: true,
-				code: 200,
-				status: "Item update successful."
-			});
-
-		});
+	return res.send({
+		success: true,
+		code: 200,
+		status: "Item update successful.",
+		item_id: item_id
 	});
 };
 
