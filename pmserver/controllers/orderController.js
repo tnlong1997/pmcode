@@ -1,6 +1,6 @@
 var Order = require('../models/orderModel');
-var Item = require('../models/itemModel');
 var User = require('../models/userModel');
+var item_helpers = require('../middlewares/helpers/item_helpers');
 
 exports.order_list = function(req, res) {
 	Order.find().exec(function(err, orders) {
@@ -38,28 +38,13 @@ exports.create_order = function(req, res) {
 
 		var buyerId = req.token._id;
 
-		//create new Item
-		var new_item = new Item({
-			item_name: req.body.item_name,
-			item_description: req.body.item_description,
-			item_price: req.body.item_price
-		});
-
-		new_item.save(function(error) {
-			if (error) { 										//this error contains duplicated key.
-				return res.send({
-					success: false,
-					code: 600,
-					status: error
-				});
-			}
-		});
+		var new_item_id = item_helpers.create_item(req, res);
 
 		var new_order = new Order({
 			order_name: req.body.order_name,
-			item: new_item._id,
+			item: new_item_id,
 			traveler_fee: req.body.traveler_fee,
-			total_fee: 0,									//total fee will be calculated later
+			total_fee: 0,
 			created_date_time: Date.now(),
 			buyer: buyerId
 		});
@@ -86,16 +71,12 @@ exports.create_order = function(req, res) {
 						code: 200,
 						status: "order and item created",
 						order_id: new_order._id,
-						item_id: new_item._id
+						item_id: new_item_id
 					});
 				});
 			}
 		});
 	} else {
-		// Error handler in future.
-		// var err = new Error("All fields required");
-		// err.status = 400;
-		// return next(err);
 		return res.send({
 			success: false,
 			code: 400,
@@ -123,35 +104,7 @@ exports.edit_order = function(req, res) {
 			});
 		}
 
-		Item.findById(order.item, function(item_err, item) {
-			if (item_err) {
-				return res.send({
-					success: false,
-					code: 600,
-					status: "Item not found",
-					err: item_err
-				});
-			}
-
-			if (!item) {
-				return res.send({
-					success: false,
-					code: 601,
-					status: "Can't find item with given id"
-				});
-			}
-
-			item.update(req.body, function(item_update_err) {
-				if (item_update_err) {
-					return res.send({
-						success: false,
-						code: 400,
-						status: "Can't update item",
-						err: item_update_err
-					});
-				}
-			});
-		});
+		var updated_item_id = item_helpers.update_item(req, res, order.item);
 
 		order.update(req.body, function(order_update_err) {
 			if (order_update_err) {
@@ -165,7 +118,9 @@ exports.edit_order = function(req, res) {
 			return res.send({
 				success: true,
 				code: 200,
-				status: "Order update successful"
+				status: "Order update successful",
+				order_id: order._id,
+				item_id: updated_item_id
 			});
 
 		});
