@@ -24,30 +24,30 @@ const wrongId = 'wrongId';
 
 chai.use(chaiHttp);
 
-before(function(done) {
-	mockgoose.prepareStorage().then(function() {
-		mongoose.connect(databaseConfig.dev, function(err) {
-			createdUser = new User(
-				usersTestData.createdTestUser
-			);
+describe('User Protected Routes', function() {
 
-			createdUser.save(function(err, user) {
-				if (err) {
-					throw (err);
-				}
+	before(function(done) {
+		mockgoose.prepareStorage().then(function() {
+			mongoose.connect(databaseConfig.dev, function(err) {
+				createdUser = new User(
+					usersTestData.createdTestUser
+				);
 
-				createdJWT = jwt.sign({email: user.email, _id: user._id}, secret, {
-					expiresIn: 10000000000000
+				createdUser.save(function(err, user) {
+					if (err) {
+						throw (err);
+					}
+
+					createdJWT = jwt.sign({email: user.email, _id: user._id}, secret, {
+						expiresIn: 10000000000000
+					});
+
+					done();
 				});
 
 			});
-
-			done();
 		});
 	});
-});
-
-describe('User Protected Routes', () => {
 
 	describe('/GET user list', () => {
 
@@ -270,4 +270,9 @@ describe('User Protected Routes', () => {
 		});
 	});
 
+	after(function(done) {
+		mockgoose.helper.reset().then(() => {
+			done();
+		});
+	});
 });
