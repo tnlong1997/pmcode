@@ -16,21 +16,51 @@ const usersTestData = require('../public/variables/users_test_data');
 
 const databaseConfig = require('../../../config/database');
 
+var createdJWT = '';
+var createdUser;
+
+const wrongJWT = 'wrongToken';
+const wrongId = 'wrongId';
+
 chai.use(chaiHttp);
 
 describe('User Protected Routes', function() {
+
+	before(function(done) {
+		mockgoose.prepareStorage().then(function() {
+			mongoose.connect(databaseConfig.dev, function(err) {
+				createdUser = new User(
+					usersTestData.createdTestUser
+				);
+
+				createdUser.save(function(err, user) {
+					if (err) {
+						throw (err);
+					}
+
+					createdJWT = jwt.sign({email: user.email, _id: user._id}, secret, {
+						expiresIn: 10000000000000
+					});
+
+					done();
+				});
+
+			});
+		});
+	});
 
 	describe('/GET user list', () => {
 
 		it('it should return user list', (done) => {
 			chai.request(app)
 				.get('/protected/users')
-				.set({'jwt': global.createdJWT})
+				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
 					res.body.data.should.be.an('array');
 					res.body.data.should.have.lengthOf(1);
+					console.log(res.body.data[0]._id);
 					done();
 				});
 		});
@@ -48,7 +78,7 @@ describe('User Protected Routes', function() {
 		it('it should not return user list with wrong token', (done) => {
 			chai.request(app)
 				.get('/protected/users')
-				.set({'jwt': global.wrongJWT})
+				.set({'jwt': wrongJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(498);
@@ -62,8 +92,8 @@ describe('User Protected Routes', function() {
 
 		it('it should change user password', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/password')
-				.set({'jwt': global.createdJWT})
+				.put('/protected/users/' + createdUser._id + '/password')
+				.set({'jwt': createdJWT})
 				.send({newPassword: 'newPassword'})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -74,7 +104,7 @@ describe('User Protected Routes', function() {
 
 		it('it should not change user password without token', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/password')
+				.put('/protected/users/' + createdUser._id + '/password')
 				.send({newPassword: 'newPassword'})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -85,8 +115,8 @@ describe('User Protected Routes', function() {
 
 		it('it should not change user password with wrong token', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/password')
-				.set({'jwt': global.wrongJWT})
+				.put('/protected/users/' + createdUser._id + '/password')
+				.set({'jwt': wrongJWT})
 				.send({newPassword: 'newPassword'})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -97,8 +127,8 @@ describe('User Protected Routes', function() {
 
 		it('it should not change user password with wrong id', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.wrongId + '/password')
-				.set({'jwt': global.createdJWT})
+				.put('/protected/users/' + wrongId + '/password')
+				.set({'jwt': createdJWT})
 				.send({newPassword: 'newPassword'})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -112,8 +142,8 @@ describe('User Protected Routes', function() {
 	describe('/GET user profile', () => {
 		it('it shoud return user profile', (done) => {
 			chai.request(app)
-				.get('/protected/users/' + global.createdUser._id + '/profile')
-				.set({'jwt': global.createdJWT})
+				.get('/protected/users/' + createdUser._id + '/profile')
+				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
@@ -124,7 +154,7 @@ describe('User Protected Routes', function() {
 
 		it('it shoud not return user profile without token', (done) => {
 			chai.request(app)
-				.get('/protected/users/' + global.createdUser._id + '/profile')
+				.get('/protected/users/' + createdUser._id + '/profile')
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(499);
@@ -134,8 +164,8 @@ describe('User Protected Routes', function() {
 
 		it('it shoud not return user profile with wrong token', (done) => {
 			chai.request(app)
-				.get('/protected/users/' + global.createdUser._id + '/profile')
-				.set({'jwt': global.wrongJWT})
+				.get('/protected/users/' + createdUser._id + '/profile')
+				.set({'jwt': wrongJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(498);
@@ -145,8 +175,8 @@ describe('User Protected Routes', function() {
 
 		it('it shoud return user profile', (done) => {
 			chai.request(app)
-				.get('/protected/users/' + global.wrongId + '/profile')
-				.set({'jwt': global.createdJWT})
+				.get('/protected/users/' + wrongId + '/profile')
+				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(600);
@@ -160,8 +190,8 @@ describe('User Protected Routes', function() {
 
 		it('it should update user profile', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/profile')
-				.set({'jwt': global.createdJWT})
+				.put('/protected/users/' + createdUser._id + '/profile')
+				.set({'jwt': createdJWT})
 				.send({
 					profile: {
 						lastName: 'new name',
@@ -177,7 +207,7 @@ describe('User Protected Routes', function() {
 
 		it('it should not update user profile without token', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/profile')
+				.put('/protected/users/' + createdUser._id + '/profile')
 				.send({
 					profile: {
 						lastName: 'new name',
@@ -193,8 +223,8 @@ describe('User Protected Routes', function() {
 
 		it('it should not update user profile with wrong token', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.createdUser._id + '/profile')
-				.set({'jwt': global.wrongJWT})
+				.put('/protected/users/' + createdUser._id + '/profile')
+				.set({'jwt': wrongJWT})
 				.send({
 					profile: {
 						lastName: 'new name',
@@ -210,8 +240,8 @@ describe('User Protected Routes', function() {
 
 		it('it should not update user profile with wrong user id', (done) => {
 			chai.request(app)
-				.put('/protected/users/' + global.wrongId + '/profile')
-				.set({'jwt': global.createdJWT})
+				.put('/protected/users/' + wrongId + '/profile')
+				.set({'jwt': createdJWT})
 				.send({
 					profile: {
 						lastName: 'new name',
@@ -230,8 +260,8 @@ describe('User Protected Routes', function() {
 	describe('/DEL delete user', function() {
 		it('it should delete users', (done) => {
 			chai.request(app)
-				.delete('/protected/users/' + global.createdUser._id)
-				.set({'jwt': global.createdJWT})
+				.delete('/protected/users/' + createdUser._id)
+				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
@@ -241,7 +271,8 @@ describe('User Protected Routes', function() {
 	});
 
 	after(function(done) {
-		mongoose.connection.db.dropDatabase(done);
+		mockgoose.helper.reset().then(() => {
+			done();
+		});
 	});
-
 });

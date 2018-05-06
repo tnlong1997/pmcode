@@ -16,6 +16,16 @@ chai.use(chaiHttp);
 
 describe('Users Public Routes', function() {
 
+	before(function(done) {
+
+		mockgoose.prepareStorage().then(function() {
+			mongoose.connect(databaseConfig.dev, function(err) {
+				done();
+			});
+		});
+
+	});
+
 	describe('/POST users sign up - successful', () => {
 
 		it('it should create new user', (done) => {
