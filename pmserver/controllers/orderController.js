@@ -1,6 +1,6 @@
 var Order = require('../models/orderModel');
 var User = require('../models/userModel');
-var item_helpers = require('../middlewares/helpers/item_helpers');
+var item_helpers = require('../middleware/helpers/item_helpers');
 
 exports.order_list = function(req, res) {
 	Order.find().exec(function(err, orders) {

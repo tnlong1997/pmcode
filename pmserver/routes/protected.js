@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var tokenAuthentication = require('../middlewares/tokenAuthentication');
+var tokenAuthentication = require('../middleware/tokenAuthentication');
 
 // Add tokenAuthentication as middleware
 router.use(tokenAuthentication);
