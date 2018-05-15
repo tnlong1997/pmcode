@@ -1,5 +1,5 @@
 var Item = require('../models/itemModel');
-var item_helpers = require('../middlewares/helpers/item_helpers');
+var item_helpers = require('../middleware/helpers/item_helpers');
 
 exports.item_list = function(req, res) {
 	Item.find().exec(function(err, item_list) {
