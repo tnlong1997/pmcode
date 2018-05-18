@@ -1,2 +1,4 @@
 --exit
 --recursive
+--timeout 5000
+--reporter dot
