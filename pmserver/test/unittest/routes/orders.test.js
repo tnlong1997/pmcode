@@ -45,10 +45,6 @@ describe('Order Routes', function() {
 					usersTestData.createdTestUser
 				);
 
-				createdItem = new Item(
-					itemsTestData.createdTestItem
-				);
-
 				createdUser.save(function(err, user) {
 					if (err) {
 						throw (err);
@@ -57,6 +53,12 @@ describe('Order Routes', function() {
 					createdJWT = jwt.sign({email: user.email, _id: user._id}, secret, {
 						expiresIn: 10000000000000
 					});
+
+					itemsTestData.createdTestItem.buyer = createdUser._id;
+
+					createdItem = new Item(
+						itemsTestData.createdTestItem
+					);
 
 					createdItem.save(function(err) {
 						if (err) {
