@@ -31,3 +31,7 @@ npm run html-lint
 
 echo "---> Running overall css linting tests..."
 npm run css-lint
+
+cd pmserver
+echo "---> Running test cases"
+npm run test
