@@ -35,6 +35,8 @@ var userSchema = new Schema(
 				default: Date.now,
 			}
 		},
+		passwordResetToken: String,
+		passwordResetExpires: Date,
 		currentOrders: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Order',
