@@ -2,8 +2,11 @@ var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
 var secret = require('../config/secret');
 var jwt = require('jsonwebtoken');
-var sign_up_email = require('../middleware/emails/sign-up-email');
+var crypto = require('crypto');
+var async = require('async');
 
+const sign_up_email = require('../middleware/emails/sign-up-email');
+const forgot_password_email = require('../middleware/emails/forgot-password-email');
 // Display all user
 exports.user_list = function(req, res) {
 
@@ -54,7 +57,7 @@ exports.user_sign_up = function(req, res, next) {
 					return next(err);
 				}
 				sign_up_email(req.body.email, function(err) {
-					if (err) {
+					if (!err) {
 						res.send({
 							success: false,
 							code: 610,
@@ -297,4 +300,57 @@ exports.user_update_profile = function(req, res) {
 			status: "Success updating profile",
 		});
 	});
+};
+
+exports.user_forgot_password = function (req, res) {
+
+	// Using async to avoid multiple nested callbacks
+	async.waterfall([
+		function(done) {
+			crypto.randomBytes(30, function(err, buf) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+					});
+				}
+				var token = buf.toString('hex');
+				done(err, token);
+			});
+		},
+		function(token, done) {
+			User.findOne({email: req.body.email}, function(err, user) {
+				if (!user) {
+					return res.send({
+						success: false,
+						code: 611,
+						status: "Can't find requested email",
+					});
+				}
+
+				user.resetPasswordToken = token;
+				user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+				user.save(function(err) {
+					if (err) {
+						return res.send({
+							success: false,
+							code: 600,
+						});
+					}
+					done(err, token, user);
+				});
+			});
+		},
+		function(token, user, done) {
+			forgot_password_email(user.email, token, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 699,
+					});
+				}
+			});
+			done();
+		}]);
 };
