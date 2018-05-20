@@ -68,4 +68,16 @@ router.post('/', userController.user_sign_up);
  */
 router.post('/login', userController.user_log_in);
 
+/**
+*/
+router.post('/forgot', userController.user_forgot_password);
+
+/**
+*/
+router.get('/reset', userController.user_reset_password_get);
+
+/**
+*/
+router.post('/reset', userController.user_reset_password_post);
+
 module.exports = router;
