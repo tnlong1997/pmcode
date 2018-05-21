@@ -1,18 +1,8 @@
 const nodemailer = require('nodemailer');
 const debug = require('debug')('my-namespace');
+const transporter = require('./transporters');
 
-const gmailTransporter = nodemailer.createTransport({
-	service: 'gmail',
-	secure: false,
-	port: 25,
-	auth: {
-		user: 'primorinc@gmail.com',
-		pass: 'primor123..',
-	},
-	tls: {
-		rejectUnauthorized: false,
-	}
-});
+const gmailTransporter = transporter.gmailTransporter;
 
 module.exports = function(receiverEmail, token, next) {
 	var mailOptions = {
