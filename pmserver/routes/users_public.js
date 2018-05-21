@@ -74,10 +74,10 @@ router.post('/forgot', userController.user_forgot_password);
 
 /**
 */
-router.get('/reset', userController.user_reset_password_get);
+router.get('/reset/:token', userController.user_reset_password_get);
 
 /**
 */
-router.post('/reset', userController.user_reset_password_post);
+router.post('/reset/:token', userController.user_reset_password_post);
 
 module.exports = router;
