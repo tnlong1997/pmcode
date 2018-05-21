@@ -35,8 +35,14 @@ var userSchema = new Schema(
 				default: Date.now,
 			}
 		},
-		passwordResetToken: String,
-		passwordResetExpires: Date,
+		resetPasswordToken: {
+			type: String,
+			default: "",
+		},
+		resetPasswordExpires: {
+			type: Date,
+			default: 0,
+		},
 		currentOrders: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Order',
