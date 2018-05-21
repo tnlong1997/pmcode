@@ -7,6 +7,8 @@ var async = require('async');
 
 const sign_up_email = require('../middleware/emails/sign-up-email');
 const forgot_password_email = require('../middleware/emails/forgot-password-email');
+const reset_password_email = require('../middleware/emails/reset-password-email');
+
 // Display all user
 exports.user_list = function(req, res) {
 
@@ -338,12 +340,13 @@ exports.user_forgot_password = function (req, res) {
 							code: 600,
 						});
 					}
-					done(err, token, user);
+					done(err, token, user.email);
 				});
+
 			});
 		},
-		function(token, user, done) {
-			forgot_password_email(user.email, token, function(err) {
+		function(token, email) {
+			forgot_password_email(email, token, function(err) {
 				if (err) {
 					return res.send({
 						success: false,
@@ -351,6 +354,97 @@ exports.user_forgot_password = function (req, res) {
 					});
 				}
 			});
-			done();
+
+			return res.send({
+				success: true,
+				code: 200,
+			});
+		}]);
+};
+
+exports.user_reset_password_get = function(req, res) {
+	User.findOne({resetPasswordToken: req.params.token}, function(err, user) {
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 498,
+				err: 'Invalid token',
+			});
+		}
+
+		if (user.resetPasswordExpires < Date.now()) {
+			return res.send({
+				success: false,
+				code: 497,
+				err: 'Expired token'
+			});
+		}
+
+		return res.send({
+			success: true,
+			code: 200,
+			email: user.email,
+		});
+	});
+};
+
+exports.user_reset_password_post = function(req, res) {
+	if (!req.body.password) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: 'Require new password',
+		});
+	}
+
+	async.waterfall([
+		function(done) {
+			User.findOne({resetPasswordToken: req.params.token}, function(err, user) {
+				if (!user) {
+					return res.send({
+						success: false,
+						code: 498,
+						err: 'Invalid token',
+					});
+				}
+
+				if (user.resetPasswordExpires < Date.now()) {
+					return res.send({
+						success: false,
+						code: 497,
+						err: 'Expired token'
+					});
+				}
+
+				user.password = bcrypt.hashSync(req.body.password);
+				user.resetPasswordToken = undefined;
+				user.resetPasswordExpires = undefined;
+
+				user.save(function(err) {
+					if (err) {
+						return res.send({
+							success: false,
+							code: 600,
+						});
+					}
+
+					done(err, user.email);
+				});
+			});
+		},
+		function(email) {
+			reset_password_email(email, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 699,
+					});
+				}
+			});
+
+			return res.send({
+				success: true,
+				code: 200,
+			});
 		}]);
 };
