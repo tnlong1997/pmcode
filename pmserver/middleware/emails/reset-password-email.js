@@ -4,12 +4,13 @@ const transporter = require('./transporters');
 
 const gmailTransporter = transporter.gmailTransporter;
 
-module.exports = function(receiverEmail, next) {
+module.exports = function(receiverEmail, token, next) {
 	var mailOptions = {
 		from: 'Primor <primorinc@gmail.com>',
 		to: receiverEmail,
-		subject: 'Welcome to Primor',
-		text: 'Text about signup...',
+		subject: 'Your password has been changed',
+		text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + receiverEmail + ' has just been changed.\n'
 	};
 
 	gmailTransporter.sendMail(mailOptions, (err, info) => {

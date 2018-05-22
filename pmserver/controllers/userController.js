@@ -2,7 +2,12 @@ var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
 var secret = require('../config/secret');
 var jwt = require('jsonwebtoken');
-var sign_up_email = require('../middleware/emails/sign-up-email');
+var crypto = require('crypto');
+var async = require('async');
+
+const sign_up_email = require('../middleware/emails/sign-up-email');
+const forgot_password_email = require('../middleware/emails/forgot-password-email');
+const reset_password_email = require('../middleware/emails/reset-password-email');
 
 // Display all user
 exports.user_list = function(req, res) {
@@ -54,7 +59,7 @@ exports.user_sign_up = function(req, res, next) {
 					return next(err);
 				}
 				sign_up_email(req.body.email, function(err) {
-					if (err) {
+					if (!err) {
 						res.send({
 							success: false,
 							code: 610,
@@ -297,4 +302,149 @@ exports.user_update_profile = function(req, res) {
 			status: "Success updating profile",
 		});
 	});
+};
+
+exports.user_forgot_password = function (req, res) {
+
+	// Using async to avoid multiple nested callbacks
+	async.waterfall([
+		function(done) {
+			crypto.randomBytes(30, function(err, buf) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+					});
+				}
+				var token = buf.toString('hex');
+				done(err, token);
+			});
+		},
+		function(token, done) {
+			User.findOne({email: req.body.email}, function(err, user) {
+				if (!user) {
+					return res.send({
+						success: false,
+						code: 611,
+						status: "Can't find requested email",
+					});
+				}
+
+				user.resetPasswordToken = token;
+				user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+				user.save(function(err) {
+					if (err) {
+						return res.send({
+							success: false,
+							code: 600,
+						});
+					}
+					done(err, token, user.email);
+				});
+
+			});
+		},
+		function(token, email) {
+			forgot_password_email(email, token, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 699,
+					});
+				}
+			});
+
+			return res.send({
+				success: true,
+				code: 200,
+			});
+		}]);
+};
+
+exports.user_reset_password_get = function(req, res) {
+	User.findOne({resetPasswordToken: req.params.token}, function(err, user) {
+		if (!user) {
+			return res.send({
+				success: false,
+				code: 498,
+				err: 'Invalid token',
+			});
+		}
+
+		if (user.resetPasswordExpires < Date.now()) {
+			return res.send({
+				success: false,
+				code: 497,
+				err: 'Expired token'
+			});
+		}
+
+		return res.send({
+			success: true,
+			code: 200,
+			email: user.email,
+		});
+	});
+};
+
+exports.user_reset_password_post = function(req, res) {
+	if (!req.body.password) {
+		return res.send({
+			success: false,
+			code: 400,
+			err: 'Require new password',
+		});
+	}
+
+	async.waterfall([
+		function(done) {
+			User.findOne({resetPasswordToken: req.params.token}, function(err, user) {
+				if (!user) {
+					return res.send({
+						success: false,
+						code: 498,
+						err: 'Invalid token',
+					});
+				}
+
+				if (user.resetPasswordExpires < Date.now()) {
+					return res.send({
+						success: false,
+						code: 497,
+						err: 'Expired token'
+					});
+				}
+
+				user.password = bcrypt.hashSync(req.body.password);
+				user.resetPasswordToken = undefined;
+				user.resetPasswordExpires = undefined;
+
+				user.save(function(err) {
+					if (err) {
+						return res.send({
+							success: false,
+							code: 600,
+						});
+					}
+
+					done(err, user.email);
+				});
+			});
+		},
+		function(email) {
+			reset_password_email(email, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 699,
+					});
+				}
+			});
+
+			return res.send({
+				success: true,
+				code: 200,
+			});
+		}]);
 };
