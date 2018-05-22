@@ -38,5 +38,7 @@ var orderSchema = new mongoose.Schema({
 
 });
 
+orderSchema.index({order_name: 'text'});
+
 var Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
