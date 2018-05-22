@@ -29,8 +29,7 @@ var createdJWT = '';
 var wrongJWT = 'wrongToken';
 var wrongID = 'wrongID';
 
-
-describe('Order Routes', function() {
+describe('Items Routes', function() {
 
 	before(function(done) {
 
@@ -85,23 +84,23 @@ describe('Order Routes', function() {
 		});
 	});
 
-	describe('/GET order list', () => {
+	describe('/GET items list', () => {
 
-		it('it should return order list', (done) => {
+		it('it should return item list', (done) => {
 			chai.request(app)
-				.get('/protected/orders')
+				.get('/protected/items')
 				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
-					res.body.orders.should.have.lengthOf(1);
+					res.body.items.should.have.lengthOf(1);
 					done();
 				});
 		});
 
 		it('it should not return order list without token', (done) => {
 			chai.request(app)
-				.get('/protected/orders')
+				.get('/protected/items')
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(499);
@@ -111,7 +110,7 @@ describe('Order Routes', function() {
 
 		it('it should not return order list with wrong token', (done) => {
 			chai.request(app)
-				.get('/protected/orders')
+				.get('/protected/items')
 				.set({'jwt': wrongJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -122,14 +121,12 @@ describe('Order Routes', function() {
 
 	});
 
-	describe('/POST order create', () => {
-
-		it('it should create new order', (done) => {
-
+	describe('/POST create item', () => {
+		it('it should create new item', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
+				.post('/protected/items')
 				.set({'jwt': createdJWT})
-				.send(ordersTestData.testOrder)
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
@@ -137,10 +134,10 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not create order without token', (done) => {
+		it('it should not create new item without token', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
-				.send(ordersTestData.testOrder)
+				.post('/protected/items')
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(499);
@@ -148,11 +145,11 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not create order with wrong token', (done) => {
+		it('it should not create new item with wrong token', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
+				.post('/protected/items')
 				.set({'jwt': wrongJWT})
-				.send(ordersTestData.testOrder)
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(498);
@@ -160,11 +157,11 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not create order without order name', (done) => {
+		it('it should not create new item without item name', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
+				.post('/protected/items')
 				.set({'jwt': createdJWT})
-				.send(ordersTestData.noOrderNameOrder)
+				.send(itemsTestData.noItemNameItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(400);
@@ -172,11 +169,11 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not create order without item name', (done) => {
+		it('it should not create new item without item description', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
+				.post('/protected/items')
 				.set({'jwt': createdJWT})
-				.send(ordersTestData.noItemNameOrder)
+				.send(itemsTestData.noItemDescriptionItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(400);
@@ -184,23 +181,11 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not create order without item price', (done) => {
+		it('it should not create new item without item price', (done) => {
 			chai.request(app)
-				.post('/protected/orders')
+				.post('/protected/items')
 				.set({'jwt': createdJWT})
-				.send(ordersTestData.noItemPriceOrder)
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
-					done();
-				});
-		});
-
-		it('it should not create order without traveler fee', (done) => {
-			chai.request(app)
-				.post('/protected/orders')
-				.set({'jwt': createdJWT})
-				.send(ordersTestData.noTravelerFeeOrder)
+				.send(itemsTestData.noItemPriceItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(400);
@@ -210,13 +195,12 @@ describe('Order Routes', function() {
 
 	});
 
-	describe('/PUT order edit', () => {
-		it('it should update order', (done) => {
-
+	describe('/PUT update item', () => {
+		it('it should update item', (done) => {
 			chai.request(app)
-				.put('/protected/orders/' + createdOrder._id)
+				.put('/protected/items/' + createdItem._id)
 				.set({'jwt': createdJWT})
-				.send(ordersTestData.createdTestOrder)
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(200);
@@ -224,10 +208,10 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not update order without token', (done) => {
+		it('it should not update item without token', (done) => {
 			chai.request(app)
-				.put('/protected/orders/' + createdOrder._id)
-				.send(ordersTestData.createdTestOrder)
+				.put('/protected/items/' + createdItem._id)
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(499);
@@ -235,11 +219,11 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not update order with wrong token', (done) => {
+		it('it should update item', (done) => {
 			chai.request(app)
-				.put('/protected/orders/' + createdOrder._id)
+				.put('/protected/items/' + createdItem._id)
 				.set({'jwt': wrongJWT})
-				.send(ordersTestData.createdTestOrder)
+				.send(itemsTestData.testItem)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(498);
@@ -248,10 +232,10 @@ describe('Order Routes', function() {
 		});
 	});
 
-	describe('/DEL order delete', () => {
-		it('it should delete order', (done) => {
+	describe('/DEL delete item', () => {
+		it('it should delete item', (done) => {
 			chai.request(app)
-				.delete('/protected/orders/' + createdOrder._id)
+				.delete('/protected/items/' + createdItem._id)
 				.set({'jwt': createdJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -260,9 +244,9 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not delete order without token', (done) => {
+		it('it should not delete item without token', (done) => {
 			chai.request(app)
-				.delete('/protected/orders/' + createdOrder._id)
+				.delete('/protected/items/' + createdItem._id)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.code.should.be.eql(499);
@@ -270,9 +254,9 @@ describe('Order Routes', function() {
 				});
 		});
 
-		it('it should not delete order with wrong token', (done) => {
+		it('it should delete item with wrong token', (done) => {
 			chai.request(app)
-				.delete('/protected/orders/' + createdOrder._id)
+				.delete('/protected/items/' + createdItem._id)
 				.set({'jwt': wrongJWT})
 				.end((err, res) => {
 					res.should.have.status(200);
@@ -280,7 +264,6 @@ describe('Order Routes', function() {
 					done();
 				});
 		});
-
 	});
 
 	after(function(done) {
