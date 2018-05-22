@@ -2,6 +2,7 @@ var User = require('../models/userModel');
 var bcrypt = require('bcrypt-nodejs');
 var secret = require('../config/secret');
 var jwt = require('jsonwebtoken');
+var sign_up_email = require('../middleware/emails/sign-up-email');
 
 // Display all user
 exports.user_list = function(req, res) {
@@ -52,6 +53,15 @@ exports.user_sign_up = function(req, res, next) {
 					});
 					return next(err);
 				}
+				sign_up_email(req.body.email, function(err) {
+					if (err) {
+						res.send({
+							success: false,
+							code: 610,
+							err: err,
+						});
+					}
+				});
 				res.send({
 					success: true,
 					code: 200,
