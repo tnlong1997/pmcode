@@ -145,12 +145,10 @@ exports.search_date = function(req, res) {
 	if (req.body.search_date_gte && req.body.search_date_lte) {
 		Order.find({
 			required_date_from: {
-				$gte: req.body.search_date_gte,
-				$lte: req.body.search_date_lte
+				$not: { $gt: req.body.search_date_lte }
 			},
 			required_date_to: {
-				$gte: req.body.search_date_gte,
-				$lte: req.body.search_date_lte
+				$not: { $lt: req.body.search_date_gte }
 			}
 		}, function(err, orders) {
 			if (err) {
