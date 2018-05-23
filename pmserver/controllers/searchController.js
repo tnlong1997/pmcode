@@ -140,3 +140,47 @@ exports.search_traveler_fee = function(req, res) {
 	}
 	
 };
+
+exports.search_date = function(req, res) {
+	if (req.body.search_date_gte && req.body.search_date_lte) {
+		Order.find({
+			required_date_from: {
+				$gte: req.body.search_date_gte,
+				$lte: req.body.search_date_lte
+			},
+			required_date_to: {
+				$gte: req.body.search_date_gte,
+				$lte: req.body.search_date_lte
+			}
+		}, function(err, orders) {
+			if (err) {
+				res.send({
+					success: false,
+					code: 400,
+					status: "Database Error"
+				});
+			}
+
+			if (orders.length == 0) {
+				res.send({
+					success: true,
+					code: 200,
+					status: "No matching item"
+				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					orders: orders
+				});
+			}
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Range required!"
+		});
+	}
+};

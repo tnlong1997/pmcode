@@ -34,8 +34,17 @@ var orderSchema = new mongoose.Schema({
 		type: Date,
 		trim: true,
 		default: Date.now
+	},
+	required_date_from: {
+		type: Date,
+		default: Date.now,
+		required: true
+	},
+	required_date_to: {
+		type: Date,
+		default: Date.now,
+		required: true
 	}
-
 });
 
 orderSchema.index({order_name: 'text'});

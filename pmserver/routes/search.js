@@ -11,4 +11,6 @@ router.post('/item-price', searchController.search_item_price);
 
 router.post('/traveler-fee', searchController.search_traveler_fee);
 
+router.post('/date', searchController.search_date);
+
 module.exports = router;

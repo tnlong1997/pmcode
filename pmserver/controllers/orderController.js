@@ -34,7 +34,9 @@ exports.create_order = function(req, res) {
 		&& req.body.traveler_fee
 		&& req.body.item_name
 		&& req.body.item_description
-		&& req.body.item_price) {
+		&& req.body.item_price
+		&& req.body.required_date_from
+		&& req.body.required_date_to) {
 
 		var buyerId = req.token._id;
 
@@ -46,7 +48,9 @@ exports.create_order = function(req, res) {
 			traveler_fee: req.body.traveler_fee,
 			total_fee: 0,
 			created_date_time: Date.now(),
-			buyer: buyerId
+			buyer: buyerId,
+			required_date_from: req.body.required_date_from,
+			required_date_to: req.body.required_date_to
 		});
 
 		new_order.save(function(order_error) {
