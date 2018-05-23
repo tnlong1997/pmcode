@@ -1,6 +1,7 @@
 var Order = require('../models/orderModel');
+var Item = require('../models/itemModel');
 
-exports.search_name = function(req, res) {
+exports.search_order_name = function(req, res) {
 	if (req.body.search_string) {
 		Order.find({$text: {$search: req.body.search_string}}, function(err, docs) {
 			if (err) {
@@ -17,15 +18,14 @@ exports.search_name = function(req, res) {
 					code: 200,
 					status: "No matching order"
 				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					docs: docs
+				});
 			}
-			
-			res.send({
-				success: true,
-				code: 200,
-				status: "Show results",
-				docs: docs
-			});
-			
 		});
 	} else {
 		res.send({
@@ -34,4 +34,109 @@ exports.search_name = function(req, res) {
 			status: "Search string required!"
 		});
 	}
+};
+
+exports.search_item_name = function(req, res) {
+	if (req.body.search_string) {
+		Item.find({$text: {$search: req.body.search_string}}, function(err, items) {
+			if (err) {
+				res.send({
+					success: false,
+					code: 400,
+					status: "Database Error"
+				});
+			}
+
+			if (items.length == 0) {
+				res.send({
+					success: true,
+					code: 200,
+					status: "No matching item	"
+				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					items: items
+				});
+			}
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Search string required!"
+		});
+	}
+};
+
+exports.search_item_price = function(req, res) {
+	if (req.body.search_price_gte && req.body.search_price_lte) {
+		Item.find({item_price: { $gte: req.body.search_price_gte, $lte: req.body.search_price_lte}}, function(err, items) {
+			if (err) {
+				res.send({
+					success: false,
+					code: 400,
+					status: "Database Error"
+				});
+			}
+			if (items.length == 0) {
+				res.send({
+					success: true,
+					code: 200,
+					status: "No matching item"
+				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					items: items
+				});
+			}
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Range required!"
+		});
+	}
+	
+};
+
+exports.search_traveler_fee = function(req, res) {
+	if (req.body.search_price_gte && req.body.search_price_lte) {
+		Order.find({traveler_fee: { $gte: req.body.search_price_gte, $lte: req.body.search_price_lte}}, function(err, orders) {
+			if (err) {
+				res.send({
+					success: false,
+					code: 400,
+					status: "Database Error"
+				});
+			}
+			if (orders.length == 0) {
+				res.send({
+					success: true,
+					code: 200,
+					status: "No matching item"
+				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					orders: orders
+				});
+			}
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Range required!"
+		});
+	}
+	
 };
