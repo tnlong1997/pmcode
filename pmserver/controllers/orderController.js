@@ -36,7 +36,8 @@ exports.create_order = function(req, res) {
 		&& req.body.item_description
 		&& req.body.item_price
 		&& req.body.required_date_from
-		&& req.body.required_date_to) {
+		&& req.body.required_date_to
+		&& req.body.receiver_country) {
 
 		var buyerId = req.token._id;
 
@@ -50,7 +51,8 @@ exports.create_order = function(req, res) {
 			created_date_time: Date.now(),
 			buyer: buyerId,
 			required_date_from: req.body.required_date_from,
-			required_date_to: req.body.required_date_to
+			required_date_to: req.body.required_date_to,
+			receiver_country: req.body.receiver_country
 		});
 
 		new_order.save(function(order_error) {

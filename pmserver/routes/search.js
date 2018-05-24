@@ -13,4 +13,6 @@ router.post('/traveler-fee', searchController.search_traveler_fee);
 
 router.post('/date', searchController.search_date);
 
+router.post('/receiver_country', searchController.search_receiver_country);
+
 module.exports = router;

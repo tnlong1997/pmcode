@@ -42,6 +42,11 @@ var orderSchema = new mongoose.Schema({
 	required_date_to: {
 		type: Date,
 		required: true
+	},
+	receiver_country: {
+		type: Number, 
+		required: true,
+		default: 1
 	}
 });
 

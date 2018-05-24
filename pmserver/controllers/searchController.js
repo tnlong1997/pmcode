@@ -202,3 +202,42 @@ exports.search_date = function(req, res) {
 		});
 	}
 };
+
+exports.search_receiver_country = function(req, res) {
+	if (req.body.search_country) {
+		Order.find({
+			receiver_country: req.body.search_country
+		}, function(err, orders) {
+			if (err) {
+				res.send({
+					success: false,
+					code: 600,
+					status: "Database Error"
+				});
+			}
+
+			if (orders.length == 0) {
+				res.send({
+					success: true,
+					code: 200,
+					status: "No matching order"
+				});
+			} else {			
+				res.send({
+					success: true,
+					code: 200,
+					status: "Show results",
+					orders: orders
+				});
+			}
+
+
+		});
+	} else {
+		res.send({
+			success: false,
+			code: 400,
+			status: "Country code!"
+		});
+	}
+};
