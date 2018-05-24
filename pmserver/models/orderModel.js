@@ -37,12 +37,10 @@ var orderSchema = new mongoose.Schema({
 	},
 	required_date_from: {
 		type: Date,
-		default: Date.now,
 		required: true
 	},
 	required_date_to: {
 		type: Date,
-		default: Date.now,
 		required: true
 	}
 });
