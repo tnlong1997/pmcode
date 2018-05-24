@@ -7,7 +7,7 @@ exports.search_order_name = function(req, res) {
 			$text: {
 				$search: req.body.search_string
 			}
-		}, function(err, docs) {
+		}, function(err, orders) {
 			if (err) {
 				res.send({
 					success: false,
@@ -16,7 +16,7 @@ exports.search_order_name = function(req, res) {
 				});
 			}
 
-			if (docs.length == 0) {
+			if (orders.length == 0) {
 				res.send({
 					success: true,
 					code: 200,
@@ -27,7 +27,7 @@ exports.search_order_name = function(req, res) {
 					success: true,
 					code: 200,
 					status: "Show results",
-					docs: docs
+					orders: orders
 				});
 			}
 		});
