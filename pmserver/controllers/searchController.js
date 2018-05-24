@@ -3,11 +3,15 @@ var Item = require('../models/itemModel');
 
 exports.search_order_name = function(req, res) {
 	if (req.body.search_string) {
-		Order.find({$text: {$search: req.body.search_string}}, function(err, docs) {
+		Order.find({
+			$text: {
+				$search: req.body.search_string
+			}
+		}, function(err, docs) {
 			if (err) {
 				res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Database Error"
 				});
 			}
@@ -38,11 +42,15 @@ exports.search_order_name = function(req, res) {
 
 exports.search_item_name = function(req, res) {
 	if (req.body.search_string) {
-		Item.find({$text: {$search: req.body.search_string}}, function(err, items) {
+		Item.find({
+			$text: {
+				$search: req.body.search_string
+			}
+		}, function(err, items) {
 			if (err) {
 				res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Database Error"
 				});
 			}
@@ -73,11 +81,16 @@ exports.search_item_name = function(req, res) {
 
 exports.search_item_price = function(req, res) {
 	if (req.body.search_price_gte && req.body.search_price_lte) {
-		Item.find({item_price: { $gte: req.body.search_price_gte, $lte: req.body.search_price_lte}}, function(err, items) {
+		Item.find({
+			item_price: { 
+				$gte: req.body.search_price_gte, 
+				$lte: req.body.search_price_lte
+			}
+		}, function(err, items) {
 			if (err) {
 				res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Database Error"
 				});
 			}
@@ -108,11 +121,17 @@ exports.search_item_price = function(req, res) {
 
 exports.search_traveler_fee = function(req, res) {
 	if (req.body.search_price_gte && req.body.search_price_lte) {
-		Order.find({traveler_fee: { $gte: req.body.search_price_gte, $lte: req.body.search_price_lte}}, function(err, orders) {
+		Order.find({
+			traveler_fee: { 
+				$gte: req.body.search_price_gte, 
+				$lte: req.body.search_price_lte
+			},
+			$comment: "Include range from input"
+		}, function(err, orders) {
 			if (err) {
 				res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Database Error"
 				});
 			}
@@ -149,12 +168,13 @@ exports.search_date = function(req, res) {
 			},
 			required_date_to: {
 				$not: { $lt: req.body.search_date_gte }
-			}
+			},
+			$comment: "Don't allow unmatched date between input and database"
 		}, function(err, orders) {
 			if (err) {
 				res.send({
 					success: false,
-					code: 400,
+					code: 600,
 					status: "Database Error"
 				});
 			}
