@@ -29,10 +29,11 @@ exports.find_suggested_order_with_search_string = function(req, res) {
 	});
 };
 
-exports.find_matched_order = function(req, res, matched_items) {
+exports.find_matched_order = function(req, res, matched_items, callback) {
 	var result = [];
-	for (var item in matched_items) {
-		console.log(item);
+	var count = 0;
+	var item;
+	for (item = 0; item < matched_items.length; item++) {
 		Order.find({
 			item: matched_items[item]._id,
 			traveler_fee: { 
@@ -55,10 +56,12 @@ exports.find_matched_order = function(req, res, matched_items) {
 					status: "Database Error Matched"
 				});
 			}
-            
 			result = result.concat(matched_orders);
-			console.log(result);
+			++count;
+			if (count == matched_items.length) {
+				callback(result);
+			}
 		});
+        
 	}
-	return result;
 };
