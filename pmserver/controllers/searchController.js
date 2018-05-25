@@ -85,7 +85,6 @@ exports.search = function(req, res) {
 						status: "No matching items"
 					});
 				} else {
-					console.log(matched_items);
 					search_helpers.find_matched_order(req, res, matched_items, function(matched_orders) {
 						if (matched_orders.length == 0) {
 							res.send({
