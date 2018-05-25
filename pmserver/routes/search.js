@@ -3,6 +3,7 @@ var router = express.Router();
 
 const searchController = require('../controllers/searchController');
 
+<<<<<<< b1bc0198c085fbc345eae50c4b61712dd3b755df
 /**
  * @api {get} protected/search/order-name Search orders by order name
  * @apiVersion 0.1.0
@@ -260,5 +261,8 @@ router.post('/date', searchController.search_date);
  *
  */
 router.post('/receiver_country', searchController.search_receiver_country);
+=======
+router.post('/', searchController.search);
+>>>>>>> Update search algo
 
 module.exports = router;
