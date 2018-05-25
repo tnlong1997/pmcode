@@ -45,21 +45,22 @@ exports.search = function(req, res) {
 						});
 					}
 				} else {
-					var matched_orders = search_helpers.find_matched_order(req, res, matched_items);
-					if (matched_orders.length == 0) {
-						res.send({
-							success: true,
-							code: 200,
-							status: "No matching order"
-						});
-					} else {
-						res.send({
-							success: true,
-							code: 200,
-							status: "Show results",
-							orders: matched_orders
-						});
-					}
+					search_helpers.find_matched_order(req, res, matched_items, function(matched_orders) {
+						if (matched_orders.length == 0) {
+							res.send({
+								success: true,
+								code: 200,
+								status: "No matching order"
+							});
+						} else {
+							res.send({
+								success: true,
+								code: 200,
+								status: "Show results",
+								orders: matched_orders
+							});
+						}
+					});
 				}
 			});
 		} else {
@@ -84,21 +85,23 @@ exports.search = function(req, res) {
 						status: "No matching items"
 					});
 				} else {
-					var matched_orders = search_helpers.find_matched_order(req, res, matched_items);
-					if (matched_orders.length == 0) {
-						res.send({
-							success: true,
-							code: 200,
-							status: "No matching order"
-						});
-					} else {
-						res.send({
-							success: true,
-							code: 200,
-							status: "Show results",
-							orders: matched_orders
-						});
-					}
+					console.log(matched_items);
+					search_helpers.find_matched_order(req, res, matched_items, function(matched_orders) {
+						if (matched_orders.length == 0) {
+							res.send({
+								success: true,
+								code: 200,
+								status: "No matching order"
+							});
+						} else {
+							res.send({
+								success: true,
+								code: 200,
+								status: "Show results",
+								orders: matched_orders
+							});
+						}
+					});
 				}
 			});
 		}
