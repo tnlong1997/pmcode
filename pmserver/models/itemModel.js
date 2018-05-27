@@ -20,6 +20,11 @@ var itemSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 		trim: true
+	},
+	status: {
+		type: Number,
+		required: true,
+		trim: true
 	}
 });
 

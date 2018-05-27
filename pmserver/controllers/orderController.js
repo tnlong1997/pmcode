@@ -135,21 +135,44 @@ exports.edit_order = function(req, res) {
 };
 
 exports.delete_order = function(req, res) {
-	Order.remove({
-		_id: req.params.id
-	}, function(err) {
-		if (err) {
+	Order.findById(req.params.id, function(order_err, order) {
+		if (order_err) {
 			return res.send({
 				success: false,
 				code: 600,
-				status: err
+				status: "Order not found",
+				err: order_err
 			});
 		}
 
-		return res.send({
-			success: true,
-			code: 200,
-			status: "Successfully delete this order"
-		});
+		if (!order) {
+			return res.send({
+				success: false,
+				code: 601,
+				status: "Can't find order with given id"
+			});
+		} else {
+			item_helpers.change_item_status(req, res, order.item, 0);
+			Order.remove({
+				_id: req.params.id
+			}, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+						status: err
+					});
+				}
+		
+				return res.send({
+					success: true,
+					code: 200,
+					status: "Successfully delete this order"
+				});
+			});
+		}
 	});
+
+
+	
 };
