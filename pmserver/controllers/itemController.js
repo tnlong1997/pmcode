@@ -67,21 +67,5 @@ exports.edit_item = function(req, res) {
 };
 
 exports.delete_item = function(req, res) {
-	Item.remove({
-		_id: req.params.id
-	}, function(err) {
-		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				status: err
-			});
-		}
-
-		return res.send({
-			success: true,
-			code: 200,
-			status: "Successfully delete this item"
-		});
-	});
+	item_helpers.delete_item(req, res);
 };
