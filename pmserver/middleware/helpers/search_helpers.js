@@ -46,7 +46,7 @@ exports.find_matched_order = function(req, res, matched_items, callback) {
 			required_date_to: {
 				$not: { $lt: req.body.search_date_gte }
 			},
-			receiver_country: req.body.search_country,
+			receiver_country: req.body.search_receiver_country,
 			$comment: "Matched item queries"
 		}, function(err_2, matched_orders) {
 			if (err_2) {
