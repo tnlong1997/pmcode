@@ -1,6 +1,6 @@
 var Order = require('../../models/orderModel');
 
-exports.find_suggested_order_with_search_string = function(req, res) {
+exports.find_suggested_order_with_search_string = function(req, res, callback) {
 	Order.find({
 		$text: {
 			$search: req.body.search_string
@@ -19,13 +19,10 @@ exports.find_suggested_order_with_search_string = function(req, res) {
 		$comment: "Suggestion queries"
 	}, function(err_2, matched_orders) {
 		if (err_2) {
-			res.send({
-				success: false,
-				code: 600,
-				status: "Database Error Suggestion"
-			});
+			callback(err_2, null);
+		} else {
+			callback(null, matched_orders);
 		}
-		return matched_orders;
 	});
 };
 
@@ -50,16 +47,12 @@ exports.find_matched_order = function(req, res, matched_items, callback) {
 			$comment: "Matched item queries"
 		}, function(err_2, matched_orders) {
 			if (err_2) {
-				res.send({
-					success: false,
-					code: 600,
-					status: "Database Error Matched"
-				});
+				callback(err_2, null);
 			}
 			result = result.concat(matched_orders);
 			++count;
 			if (count == matched_items.length) {
-				callback(result);
+				callback(null, result);
 			}
 		});
         
