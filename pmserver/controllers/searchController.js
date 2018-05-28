@@ -45,23 +45,39 @@ exports.search = function(req, res) {
 						}
 						console.log(matched_items);
 						if (matched_items.length == 0) {
-							var suggested_orders = search_helpers.find_suggested_order_with_search_string(req, res);
-							if (suggested_orders.length == 0) {
-								res.send({
-									success: true,
-									code: 200,
-									status: "No matching order"
-								});
-							} else {
-								res.send({
-									success: true,
-									code: 200,
-									status: "Show suggestion orders",
-									orders: suggested_orders
-								});
-							}
+							search_helpers.find_suggested_order_with_search_string(req, res, function(err, suggested_orders) {
+								if (err) {
+									res.send({
+										success: false,
+										code: 600,
+										status: "Database Error Suggestion"
+									});
+								}
+								if (suggested_orders.length == 0) {
+									res.send({
+										success: true,
+										code: 200,
+										status: "No matching order"
+									});
+								} else {
+									res.send({
+										success: true,
+										code: 200,
+										status: "Show suggestion orders",
+										orders: suggested_orders
+									});
+								}
+							});
 						} else {
-							search_helpers.find_matched_order(req, res, matched_items, function(matched_orders) {
+							search_helpers.find_matched_order(req, res, matched_items, function(err_2, matched_orders) {	
+								if (err_2) {
+									res.send({
+										success: false,
+										code: 600,
+										status: "Database Error Matched"
+									});
+								}
+
 								if (matched_orders.length == 0) {
 									res.send({
 										success: true,
@@ -106,7 +122,15 @@ exports.search = function(req, res) {
 								status: "No matching items"
 							});
 						} else {
-							search_helpers.find_matched_order(req, res, matched_items, function(matched_orders) {
+							search_helpers.find_matched_order(req, res, matched_items, function(err_2, matched_orders) {
+								if (err_2) {
+									res.send({
+										success: false,
+										code: 600,
+										status: "Database Error Matched"
+									});
+								}
+
 								if (matched_orders.length == 0) {
 									res.send({
 										success: true,
