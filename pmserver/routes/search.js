@@ -21,6 +21,8 @@ const searchController = require('../controllers/searchController');
  * @apiParam {Date} search_date_gte Minimum mark for date search.
  * @apiParam {Date} search_date_lte Maximum mark for date search.
  * @apiParam {Number} search_receiver_country Country code for country search.
+ * @apiParam {Number} page_index Page index.
+ * @apiParam {Number} num_of_orders Limit number of orders.
  *
  * @apiSuccess {Boolean} success Status indicator.
  * @apiSuccess {Number} code Status code.
