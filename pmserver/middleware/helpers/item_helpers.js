@@ -105,7 +105,7 @@ exports.change_item_status = function(req, res, id, status_code) {
 };
 
 exports.delete_item = function(req, res) {
-	Item.findById(req.body.id, function(err, item) {
+	Item.findById(req.params.id, function(err, item) {
 		if (err) {
 			return res.send({
 				success: false,
