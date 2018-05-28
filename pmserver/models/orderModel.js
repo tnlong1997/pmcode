@@ -34,9 +34,23 @@ var orderSchema = new mongoose.Schema({
 		type: Date,
 		trim: true,
 		default: Date.now
+	},
+	required_date_from: {
+		type: Date,
+		required: true
+	},
+	required_date_to: {
+		type: Date,
+		required: true
+	},
+	receiver_country: {
+		type: Number, 
+		required: true,
+		default: 1
 	}
-
 });
+
+orderSchema.index({order_name: 'text'});
 
 var Order = mongoose.model('Order', orderSchema);
 module.exports = Order;

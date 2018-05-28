@@ -20,8 +20,15 @@ var itemSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 		trim: true
+	},
+	status: {
+		type: Number,
+		required: true,
+		trim: true
 	}
 });
+
+itemSchema.index({item_name: 'text', item_description: 'text'});
 
 var Item = mongoose.model('Item', itemSchema);
 module.exports = Item;

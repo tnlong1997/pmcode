@@ -34,7 +34,10 @@ exports.create_order = function(req, res) {
 		&& req.body.traveler_fee
 		&& req.body.item_name
 		&& req.body.item_description
-		&& req.body.item_price) {
+		&& req.body.item_price
+		&& req.body.required_date_from
+		&& req.body.required_date_to
+		&& req.body.receiver_country) {
 
 		var buyerId = req.token._id;
 
@@ -46,7 +49,10 @@ exports.create_order = function(req, res) {
 			traveler_fee: req.body.traveler_fee,
 			total_fee: 0,
 			created_date_time: Date.now(),
-			buyer: buyerId
+			buyer: buyerId,
+			required_date_from: req.body.required_date_from,
+			required_date_to: req.body.required_date_to,
+			receiver_country: req.body.receiver_country
 		});
 
 		new_order.save(function(order_error) {
@@ -129,21 +135,44 @@ exports.edit_order = function(req, res) {
 };
 
 exports.delete_order = function(req, res) {
-	Order.remove({
-		_id: req.params.id
-	}, function(err) {
-		if (err) {
+	Order.findById(req.params.id, function(order_err, order) {
+		if (order_err) {
 			return res.send({
 				success: false,
 				code: 600,
-				status: err
+				status: "Order not found",
+				err: order_err
 			});
 		}
 
-		return res.send({
-			success: true,
-			code: 200,
-			status: "Successfully delete this order"
-		});
+		if (!order) {
+			return res.send({
+				success: false,
+				code: 601,
+				status: "Can't find order with given id"
+			});
+		} else {
+			item_helpers.change_item_status(req, res, order.item, 0);
+			Order.remove({
+				_id: req.params.id
+			}, function(err) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+						status: err
+					});
+				}
+		
+				return res.send({
+					success: true,
+					code: 200,
+					status: "Successfully delete this order"
+				});
+			});
+		}
 	});
+
+
+	
 };
