@@ -1,6 +1,6 @@
 var Item = require('../../models/itemModel');
 
-exports.create_item = function(req, res) {
+exports.create_item = function(req, res, callback) {
 	var new_item = new Item({
 		item_name: req.body.item_name,
 		item_description: req.body.item_description,
@@ -11,140 +11,74 @@ exports.create_item = function(req, res) {
 
 	new_item.validate(function(db_err) {
 		if (db_err) {
-			res.send({
-				success: false,
-				code: 600,
-				status: "Database error",
-				err: db_err
-			});
+			callback(db_err, null);
 		} else {
 			new_item.save(function(db_err_2) {
 				if (db_err_2) {
-					res.send({
-						success: false,
-						code: 600,
-						status: "Database Error",
-						err: db_err_2
-					});
+					callback(db_err_2, null);
 				}
 			});		
+			callback(null, new_item._id);
 		}
 	});
-
-	return new_item._id;
 };
 
-exports.update_item = function(req, res, id) {
+exports.update_item = function(req, res, id, callback) {
 	Item.findById(id, function(err, item) {
 		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				status: "Error with database",
-				err: err
-			});
+			callback(err, null);
 		}
 
 		if (!item) {
-			return res.send({
-				success: false,
-				code: 601,
-				status: "Item not found",
-			});
+			callback(null, null);
 		}
 
 		item.update(req.body, function(item_update_err) {
 			if (item_update_err) {
-				return res.send({
-					success: false,
-					code: 600,
-					status: "Can't update item",
-					err: item_update_err
-				});
+				callback(item_update_err, null);
 			}
-
+			callback(null, item);
 		});
 	}); 
-
-	return id;
 };
 
-exports.change_item_status = function(req, res, id, status_code) {
+exports.change_item_status = function(req, res, id, status_code, callback) {
 	Item.findById(id, function(err, item) {
 		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				status: "Error with database",
-				err: err
-			});
+			callback(err, null);
 		}
 
 		if (!item) {
-			return res.send({
-				success: false,
-				code: 601,
-				status: "Item not found",
-			});
+			callback(null, null);
 		} else {
 			item.update({status: status_code}, function(stt_update_err) {
 				if (stt_update_err) {
-					return res.send({
-						success: false,
-						code: 600,
-						status: "Can't update item",
-						err: stt_update_err
-					});
+					callback(stt_update_err, null);
 				}
+
+				callback(null, item);
 			});
 		}
-
-
 	});
-	return id;
 };
 
-exports.delete_item = function(req, res) {
+exports.delete_item = function(req, res, callback) {
 	Item.findById(req.params.id, function(err, item) {
 		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				status: "Error with database",
-				err: err
-			});
+			callback(err, null, 0);
 		}
 
 		if (!item) {
-			return res.send({
-				success: false,
-				code: 601,
-				status: "Item not found",
-			});
+			callback(null, null, 0);
 		} else {
 			if (item.status == 1) {
-				res.send({
-					success: true,
-					code: 200,
-					status: "Cannot delete active item"
-				});
+				callback(null, item, 0);
 			} else {
-				Item.remove({
-					_id: req.params.id
-				}, function(err) {
+				Item.remove({_id: req.params.id}, function(err) {
 					if (err) {
-						return res.send({
-							success: false,
-							code: 600,
-							status: err
-						});
-					}
-			
-					return res.send({
-						success: true,
-						code: 200,
-						status: "Successfully delete this item"
-					});
+						callback(err, null, 0);
+					}			
+					callback(null, item, 1);
 				});
 			}
 		}

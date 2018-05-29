@@ -41,47 +41,48 @@ exports.create_order = function(req, res) {
 
 		var buyerId = req.token._id;
 
-		var new_item_id = item_helpers.create_item(req, res);
-
-		var new_order = new Order({
-			order_name: req.body.order_name,
-			item: new_item_id,
-			traveler_fee: req.body.traveler_fee,
-			total_fee: 0,
-			created_date_time: Date.now(),
-			buyer: buyerId,
-			required_date_from: req.body.required_date_from,
-			required_date_to: req.body.required_date_to,
-			receiver_country: req.body.receiver_country
-		});
-
-		new_order.save(function(order_error) {
-			if (order_error) {
-				return res.send({
-					success: false,
-					code: 600,
-					status: order_error
-				});
-			} else {
-				User.findByIdAndUpdate(buyerId, {$addToSet: {currentOrders: new_order._id}}, function(err) {
-					if (err) {
-						return res.send({
-							success: false,
-							code: 600,
-							err: "Error adding order to buyer databases",
-						});
-					}
-
+		item_helpers.create_item(req, res, function(item_helper_err, item_id) {
+			var new_order = new Order({
+				order_name: req.body.order_name,
+				item: item_id,
+				traveler_fee: req.body.traveler_fee,
+				total_fee: 0,
+				created_date_time: Date.now(),
+				buyer: buyerId,
+				required_date_from: req.body.required_date_from,
+				required_date_to: req.body.required_date_to,
+				receiver_country: req.body.receiver_country
+			});
+	
+			new_order.save(function(order_error) {
+				if (order_error) {
 					return res.send({
-						success: true,
-						code: 200,
-						status: "order and item created",
-						order_id: new_order._id,
-						item_id: new_item_id
+						success: false,
+						code: 600,
+						status: order_error
 					});
-				});
-			}
+				} else {
+					User.findByIdAndUpdate(buyerId, {$addToSet: {currentOrders: new_order._id}}, function(err) {
+						if (err) {
+							return res.send({
+								success: false,
+								code: 600,
+								err: "Error adding order to buyer databases",
+							});
+						}
+	
+						return res.send({
+							success: true,
+							code: 200,
+							status: "order and item created",
+							order_id: new_order._id,
+							item_id: item_id
+						});
+					});
+				}
+			});
 		});
+
 	} else {
 		return res.send({
 			success: false,
@@ -110,27 +111,42 @@ exports.edit_order = function(req, res) {
 			});
 		}
 
-		var updated_item_id = item_helpers.update_item(req, res, order.item);
-
-		order.update(req.body, function(order_update_err) {
-			if (order_update_err) {
+		item_helpers.update_item(req, res, order.item, function(err, item) {
+			if (err) {
 				return res.send({
 					success: false,
 					code: 600,
-					status: "Can't update order",
-					err: order_update_err
+					status: "Error with database",
+					err: err
 				});
 			}
-			return res.send({
-				success: true,
-				code: 200,
-				status: "Order update successful",
-				order_id: order._id,
-				item_id: updated_item_id
+
+			if (!item) {
+				return res.send({
+					success: false,
+					code: 601,
+					status: "Item not found",
+				});
+			}
+
+			order.update(req.body, function(order_update_err) {
+				if (order_update_err) {
+					return res.send({
+						success: false,
+						code: 600,
+						status: "Can't update order",
+						err: order_update_err
+					});
+				}
+				return res.send({
+					success: true,
+					code: 200,
+					status: "Order update successful",
+					order_id: order._id,
+					item_id: item._id
+				});
 			});
-
 		});
-
 	});
 };
 
@@ -152,23 +168,49 @@ exports.delete_order = function(req, res) {
 				status: "Can't find order with given id"
 			});
 		} else {
-			item_helpers.change_item_status(req, res, order.item, 0);
-			Order.remove({
-				_id: req.params.id
-			}, function(err) {
+			item_helpers.change_item_status(req, res, order.item, 0, function(err, item, status) {
 				if (err) {
 					return res.send({
 						success: false,
 						code: 600,
-						status: err
+						status: "Error with database",
+						err: err
 					});
 				}
 		
-				return res.send({
-					success: true,
-					code: 200,
-					status: "Successfully delete this order"
-				});
+				if (!item) {
+					return res.send({
+						success: false,
+						code: 601,
+						status: "Item not found",
+					});
+				} else {
+					if (status == 0) {
+						res.send({
+							success: true,
+							code: 200,
+							status: "Cannot delete active item"
+						});
+					} else {
+						Order.remove({
+							_id: req.params.id
+						}, function(err) {
+							if (err) {
+								return res.send({
+									success: false,
+									code: 600,
+									status: err
+								});
+							}
+					
+							return res.send({
+								success: true,
+								code: 200,
+								status: "Successfully delete this order"
+							});
+						});
+					}
+				}
 			});
 		}
 	});
