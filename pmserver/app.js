@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cors  = require('cors');
 
 var databaseConfig = require('./config/database');
 
@@ -41,6 +42,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+var allowedOrigins = ['http://localhost:4200', 'https://primor-prod.herokuapp.com'];
+app.use(cors({
+	origin: function(origin, callback) {
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.indexOf(origin) === -1) {
+			var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+			return callback(new Error(msg), false);
+		}
+		return callback(null, true);
+	}
+}));
 
 app.use('/', index);
 
