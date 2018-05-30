@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tnlong1997/pmcode.svg?branch=master)](https://travis-ci.org/tnlong1997/pmcode)
+
 # pmcode
 Backend for Primor
 ---------
