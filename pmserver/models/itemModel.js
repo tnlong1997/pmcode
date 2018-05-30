@@ -2,17 +2,17 @@ var mongoose = require('mongoose');
 
 var itemSchema = new mongoose.Schema({
 	item_name: {
-		type: String, 
+		type: String,
 		required: true,
 		trim: true
 	},
 	item_description: {
-		type: String, 
+		type: String,
 		required: true,
 		trim: true
 	},
 	buyer: {
-		type: mongoose.Schema.Types.ObjectId, 
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
 		required: true
 	},
@@ -24,7 +24,8 @@ var itemSchema = new mongoose.Schema({
 	status: {
 		type: Number,
 		required: true,
-		trim: true
+		trim: true,
+		default: 1,
 	}
 });
 
