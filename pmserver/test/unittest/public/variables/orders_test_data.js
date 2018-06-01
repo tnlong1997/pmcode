@@ -4,12 +4,16 @@ exports.testOrder = {
 	item_description: 'test',
 	item_price: 100,
 	traveler_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.createdTestOrder = {
 	order_name: 'createdOrder',
 	traveler_fee: 100,
 	total_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.noOrderNameOrder = {
@@ -17,6 +21,8 @@ exports.noOrderNameOrder = {
 	item_description: 'test',
 	item_price: 100,
 	traveler_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.noItemNameOrder = {
@@ -24,6 +30,8 @@ exports.noItemNameOrder = {
 	item_description: 'test',
 	item_price: 100,
 	traveler_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.noItemDescriptionOrder = {
@@ -31,6 +39,8 @@ exports.noItemDescriptionOrder = {
 	item_name: 'testItem',
 	item_price: 100,
 	traveler_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.noItemPriceOrder = {
@@ -38,6 +48,8 @@ exports.noItemPriceOrder = {
 	item_name: 'testItem',
 	item_description: 'test',
 	traveler_fee: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
 
 exports.noTravelerFeeOrder = {
@@ -45,4 +57,6 @@ exports.noTravelerFeeOrder = {
 	item_name: 'testItem',
 	item_description: 'test',
 	item_price: 100,
+	required_date_from: Date.now(),
+	required_date_to: Date.now(),
 };
