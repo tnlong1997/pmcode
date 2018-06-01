@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "lint-mac": "./node_modules/.bin/eslint '**/*.js'",
-    "lint-window": "./node_modules/.bin/eslint **/*.js"
+    "lint-window": "./node_modules/.bin/eslint **/*.js",
+    "lint-window-fix": "./node_modules/.bin/eslint **/*.js --fix"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
