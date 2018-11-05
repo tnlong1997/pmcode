@@ -15,7 +15,8 @@ exports.find_suggested_order_with_search_string = function(req, res, callback) {
 		required_date_to: {
 			$not: { $lt: req.body.search_date_gte }
 		},
-		receiver_country: req.body.search_country,
+		receiver_country: req.body.search_receiver_country,
+		product_country: req.body.search_product_country,
 		$comment: "Suggestion queries"
 	}, function(err_2, matched_orders) {
 		if (err_2) {
@@ -44,6 +45,7 @@ exports.find_matched_order = function(req, res, matched_items, callback) {
 				$not: { $lt: req.body.search_date_gte }
 			},
 			receiver_country: req.body.search_receiver_country,
+			product_country: req.body.search_product_country,
 			$comment: "Matched item queries"
 		}, function(err_2, matched_orders) {
 			if (err_2) {

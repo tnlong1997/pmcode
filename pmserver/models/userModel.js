@@ -50,7 +50,11 @@ var userSchema = new Schema(
 		pastOrders: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Order',
-		}]
+		}],
+		currentTrips: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Trip',
+		}],
 	},
 	{timestamps: true}
 );

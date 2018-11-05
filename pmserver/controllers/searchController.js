@@ -8,6 +8,7 @@ exports.search = function(req, res) {
 	&& req.body.search_traveler_fee_lte
 	&& req.body.search_date_gte
 	&& req.body.search_date_lte
+	&& req.body.search_product_country
 	&& req.body.search_receiver_country
 	&& req.body.page_index
 	&& req.body.num_of_orders) {
@@ -43,7 +44,6 @@ exports.search = function(req, res) {
 								err: err
 							});
 						}
-						console.log(matched_items);
 						if (matched_items.length == 0) {
 							search_helpers.find_suggested_order_with_search_string(req, res, function(err, suggested_orders) {
 								if (err) {

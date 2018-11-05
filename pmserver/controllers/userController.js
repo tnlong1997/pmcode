@@ -8,6 +8,7 @@ var async = require('async');
 const sign_up_email = require('../middleware/emails/sign-up-email');
 const forgot_password_email = require('../middleware/emails/forgot-password-email');
 const reset_password_email = require('../middleware/emails/reset-password-email');
+var notificationController = require("./notificationController");
 
 // Display all user
 exports.user_list = function(req, res) {
@@ -122,9 +123,15 @@ exports.user_log_in = function(req, res) {
 					var token = jwt.sign({email: user.email, _id: user._id}, secret, {
 						expiresIn: 1000000000000000 // in seconds
 					});
+
+					var optionDict = {};
+					var notification_message = "Welcome to Primor";
+					var notification_message_id = notificationController.notify(user._id, optionDict, notification_message, res);
 					res.json({
 						success: true,
 						code: 200,
+						notification_message: notification_message,
+						notification_message_id: notification_message_id,
 						token: token,
 					});
 				} else if (!isMatch) {
@@ -182,9 +189,15 @@ exports.user_change_password = function(req, res) {
 			});
 		}
 
+		var optionDict = {};
+		var notification_message = "Your password has been changed";
+		var notification_message_id = notificationController.notify(user._id, optionDict, notification_message, res);
+					
 		res.send({
 			success: true,
 			code: 200,
+			notification_message: notification_message,
+			notification_message_id: notification_message_id,
 			status: "Successfully change password"
 		});
 	});
@@ -295,10 +308,15 @@ exports.user_update_profile = function(req, res) {
 				err: "Can't find user with given ID",
 			});
 		}
-
+		var optionDict = {};
+		var notification_message = "Welcome to Primor";
+		var notification_message_id = notificationController.notify(user._id, optionDict, notification_message, res);
+					
 		res.send({
 			success: true,
 			code: 200,
+			notification_message: notification_message,
+			notification_message_id: notification_message_id,
 			status: "Success updating profile",
 		});
 	});

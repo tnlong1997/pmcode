@@ -51,6 +51,10 @@ const orderController = require('../controllers/orderController');
  */
 router.get('/', orderController.order_list);
 
+router.get('/buyer', orderController.order_list_buyer);
+
+router.get('/traveler', orderController.order_list_traveler);
+
 /**
  *
  * @api {post} protected/orders Create new order

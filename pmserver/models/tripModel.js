@@ -1,29 +1,25 @@
 var mongoose = require('mongoose');
 
 var tripSchema = new mongoose.Schema({
-	departure_date: {
+	departureDate: {
 		type: Date,
 		required: true, 
 		trim: true
 	},
-	arrival_date: {
+	arrivalDate: {
 		type: Date, 
 		required: true,
 		trim: true
 	},
-	//Will add address after parsing info from map API
-	departure_airport: {
-		type: String, 
-		required: true,
-	},
-	arrival_airport: {
+	from: {
 		type: String,
-		required: true
+		required: true,
+		trim: true,
 	},
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
-		required: true
+	to: {
+		type: String,
+		required: true,
+		trim: true,
 	}
 });
 

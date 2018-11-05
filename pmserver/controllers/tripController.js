@@ -1,4 +1,5 @@
-var Trip = require('../models/tripModel');
+let Trip = require('../models/tripModel');
+let User = require('../models/userModel');
 
 exports.trip_list = function(req, res) {
 	Trip.find().exec(function(db_err, trips) {
@@ -27,51 +28,84 @@ exports.trip_list = function(req, res) {
 	});
 };
 
-exports.create_trip = function(req, res) {
-	if (req.body.departure_date &&
-		req.body.arrival_date &&
-		req.body.departure_airport &&
-		req.body.arrival_airport) {
-		var owner_id = req.token._id;
+exports.get_trips = function(req, res) {
+	let shipperId = req.params.id;
 
-		var new_trip = new Trip({
-			departure_date: req.body.departure_date,
-			arrival_date: req.body.arrival_date,
-			departure_airport: req.body.departure_airport,
-			arrival_airport: req.body.arrival_airport,
-			user: owner_id
-		});
-
-		new_trip.validate(function(db_err) {
-			if (db_err) {
-				res.send({
+	User.findById(shipperId, 'currentTrips')
+		.populate('currentTrips')
+		.exec(function(err, trips) {
+			if (err) {
+				return res.send({
 					success: false,
 					code: 600,
 					status: "Database error",
-					err: db_err
+					err: err,
 				});
-			} else {
-				new_trip.save(function(db_err_2) {
-					if (db_err_2) {
-						res.send({
+			}
+
+			return res.send({
+				success: true,
+				code: 200,
+				status: "Received current trips",
+				currentTrips: trips.currentTrips,
+			});
+		});
+};
+
+exports.create_trip = function(req, res) {
+	if (req.body.departureDate
+		&& req.body.arrivalDate
+		&& req.body.from
+		&& req.body.to) {
+
+		let shipperId = req.token._id;
+		let newTrip = new Trip({
+			departureDate: req.body.departureDate,
+			arrivalDate: req.body.arrivalDate,
+			from: req.body.from,
+			to: req.body.to,
+		});
+
+		newTrip.validate(function(err) {
+			if (err) {
+				return res.send({
+					success: false,
+					code: 600,
+					status: "Database error",
+					err: err,
+				});
+			} 
+
+			newTrip.save(function(err, trip) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+						status: "Database Error",
+						err: err,
+					});
+				}
+
+				User.findByIdAndUpdate(shipperId, {$addToSet: {currentTrips: trip._id}}, function(err) {
+					if (err) {
+						return res.send({
 							success: false,
 							code: 600,
-							status: "Database Error",
-							err: db_err_2
+							err: err,
 						});
 					}
 
-					res.send({
+					return res.send({
 						success: true,
 						code: 200,
 						status: "Trip created successfully",
-						trip_id: new_trip
+						tripId: trip._id,
 					});
 				});
-			}
+			});
 		});
 	} else {
-		res.send({
+		return res.send({
 			success: false,
 			code: 400,
 			status: "Missing Required Field"
@@ -81,31 +115,31 @@ exports.create_trip = function(req, res) {
 
 
 exports.edit_trip = function(req, res) {
-	Trip.findById(req.params.id, function(find_id_err, trip) {
-		if (find_id_err) {
+	Trip.findById(req.params.id, function(err, trip) {
+		if (err) {
 			return res.send({
 				success: false,
 				code: 600,
 				status: "Database CastError",
-				err: find_id_err
+				err: err
 			});
 		}
 
 		if (!trip) {
-			res.send({
+			return res.send({
 				success: false,
 				code: 601,
 				status: "Can't find item"
 			});
 		}
 
-		trip.update(req.body, function(trip_update_err) {
-			if (trip_update_err) {
+		trip.update(req.body, function(err) {
+			if (err) {
 				return res.send({
 					success: false,
 					code: 600,
 					status: "Can't update trip",
-					err: trip_update_err
+					err: err
 				});
 			}
 			return res.send({
@@ -120,13 +154,13 @@ exports.edit_trip = function(req, res) {
 };
 
 exports.delete_trip = function(req, res) {
-	Trip.remove({_id: req.params.id}, function(db_err) {
-		if (db_err) {
+	Trip.remove({_id: req.params.id}, function(err) {
+		if (err) {
 			return res.send({
 				success: false,
 				code: 600,
 				status: "Database Error",
-				err: db_err
+				err: err,
 			});
 		}
 

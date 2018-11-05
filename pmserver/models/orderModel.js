@@ -43,10 +43,13 @@ var orderSchema = new mongoose.Schema({
 		type: Date,
 		required: true
 	},
+	product_country: {
+		type: String, 
+		required: true
+	},
 	receiver_country: {
-		type: Number, 
-		required: true,
-		default: 1
+		type: String,
+		required: true
 	}
 });
 

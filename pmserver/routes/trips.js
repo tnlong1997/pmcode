@@ -49,6 +49,8 @@ const tripController = require('../controllers/tripController');
  */
 router.get('/', tripController.trip_list);
 
+router.get('/:id', tripController.get_trips);
+
 /**
  *
  * @api {post} protected/trips Create new trip
