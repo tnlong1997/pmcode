@@ -34,7 +34,6 @@ describe('Users Public Routes', function() {
 				.send(usersTestData.testUser)
 				.end((err, res) => {
 					res.should.have.status(200);
-					res.body.code.should.be.eql(200);
 					done();
 				});
 		});
@@ -48,8 +47,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.testUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});
@@ -59,8 +57,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.wrongEmailFormatUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});
@@ -70,8 +67,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.noPasswordUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});
@@ -81,8 +77,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.noEmailUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});
@@ -92,8 +87,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.noLastNameUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});
@@ -103,8 +97,7 @@ describe('Users Public Routes', function() {
 				.post('/public/users')
 				.send(usersTestData.noFirstNameUser)
 				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.code.should.be.eql(400);
+					res.should.have.status(400);
 					done();
 				});
 		});

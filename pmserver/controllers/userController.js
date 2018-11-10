@@ -5,10 +5,12 @@ var jwt = require('jsonwebtoken');
 var crypto = require('crypto');
 var async = require('async');
 
-const sign_up_email = require('../middleware/emails/sign-up-email');
+//const sign_up_email = require('../middleware/emails/sign-up-email');
 const forgot_password_email = require('../middleware/emails/forgot-password-email');
 const reset_password_email = require('../middleware/emails/reset-password-email');
 var notificationController = require("./notificationController");
+
+const SALT_FACTOR = 12;
 
 // Display all user
 exports.user_list = function(req, res) {
@@ -31,52 +33,37 @@ exports.user_list = function(req, res) {
 
 };
 
-exports.user_sign_up = function(req, res, next) {
-	req.body.password = bcrypt.hashSync(req.body.password);
-	var newUser = new User(
-		req.body
-	);
-
-	// Check if user username and password is valid
+exports.user_sign_up = function(req, res) {
+	let newUser = new User(req.body);
+	// Check if user username is valid
 	newUser.validate(function(err) {
-
 		if (err) {
-			res.send({
-				success: false,
-				code: 400,
-				err: err.message,
-			});
-			return false;
-		} else {
-
-			// Save User to database
-			newUser.save(function(err) {
-				if (err) {
-					res.send({
-						success: false,
-						code: 600,
-						err: err,
-					});
-					return next(err);
-				}
-				sign_up_email(req.body.email, function(err) {
-					if (!err) {
-						res.send({
-							success: false,
-							code: 610,
-							err: err,
-						});
-					}
-				});
-				res.send({
-					success: true,
-					code: 200,
-					user_id: newUser._id,
-				});
-			});
-
+			return res.status(400).send({ err: err.message });
 		}
-
+		// Generate salt for bcrypt hash
+		bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+			if (err) {
+				return res.status(600).send({ err: err });
+			}
+			// Hash and store hashed password
+			bcrypt.hash(newUser.password, salt, noop, function(err, hashedPassword) {
+				if (err) {
+					return res.status(600).send({ err: err });
+				}
+				newUser.password = hashedPassword;
+				newUser.save(function(err) {
+					if (err) {
+						return res.status(600).send({ err: err });
+					}
+					//sign_up_email(req.body.email, function(err) {
+					//	if (err) {
+					//		return res.status(600).send({ err: err });
+					//	}
+					return res.status(200).send({ userId: newUser._id });
+					//});
+				});
+			});
+		});
 	});
 };
 
@@ -170,35 +157,43 @@ exports.user_change_password = function(req, res) {
 		});
 	}
 
-	var encrytedNewPassword = bcrypt.hashSync(req.body.newPassword);
-
-	User.findByIdAndUpdate(req.params.id, {$set: {password: encrytedNewPassword}}, function(err, user) {
+	bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
 		if (err) {
-			return res.send({
-				success: false,
-				code: 600,
-				err: "Error changing password"
-			});
+			return res.status(600).send({ err: err });
 		}
+		bcrypt.hash(req.body.newPassword, salt, noop, function(err, hashedPassword) {
+			if (err) {
+				return res.status(600).send({ err: err });
+			}
+			User.findByIdAndUpdate(req.params.id, {$set: {password: hashedPassword}}, function(err, user) {
+				if (err) {
+					return res.send({
+						success: false,
+						code: 600,
+						err: "Error changing password"
+					});
+				}
 
-		if (!user) {
-			return res.send({
-				success: false,
-				code: 601,
-				err: "Can't find user with given ID",
+				if (!user) {
+					return res.send({
+						success: false,
+						code: 601,
+						err: "Can't find user with given ID",
+					});
+				}
+
+				var optionDict = {};
+				var notificationMsg = "Your password has been changed";
+				var notificationMsgId = notificationController.notify(user._id, optionDict, notificationMsg, res);
+							
+				res.send({
+					success: true,
+					code: 200,
+					notificationMsg: notificationMsg,
+					notificationMsgId: notificationMsgId,
+					status: "Successfully change password"
+				});
 			});
-		}
-
-		var optionDict = {};
-		var notification_message = "Your password has been changed";
-		var notification_message_id = notificationController.notify(user._id, optionDict, notification_message, res);
-					
-		res.send({
-			success: true,
-			code: 200,
-			notification_message: notification_message,
-			notification_message_id: notification_message_id,
-			status: "Successfully change password"
 		});
 	});
 };
@@ -466,3 +461,5 @@ exports.user_reset_password_post = function(req, res) {
 			});
 		}]);
 };
+
+let noop = function() {}; // A do-nothing function for use with bcrypt module
